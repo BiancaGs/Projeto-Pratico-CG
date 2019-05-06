@@ -30,10 +30,48 @@
         <script id="fragment-shader" type="x-shader/x-fragment">
 
         </script>
+        
 
         <!-- Código para manipulação -->
         <script>
         
+            // Verifica se foi possível inicializar o WebGL
+            if (!WEBGL.isWebGLAvailable()) {
+                var erro = WEBGL.getWebGLErrorMessage();
+                alert(erro);
+            }
+
+            // Variáveis para utilização posterior
+            var container;
+            var camera, controls, scene, renderer;
+            var ambient;
+            var light;
+            var canvas = document.getElementById('modelo');
+          
+            // Chamadas
+            init();
+            animate();
+
+
+            // =======================================================
+            // FUNÇÕES
+            // =======================================================
+
+            // Função init
+            function init() {
+
+            }
+
+            // Função animate
+            function animate(){
+            
+            }
+
+            // Funcão render
+            function render() {
+                
+            }
+
         </script>
 
     </body>
