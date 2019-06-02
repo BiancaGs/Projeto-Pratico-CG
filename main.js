@@ -63,7 +63,6 @@ function init() {
 
     scene.add(plane);
 
-
     // =======================================================
     // Vertex e Fragment Shaders
     // =======================================================
@@ -79,17 +78,23 @@ function init() {
     // =======================================================
     // Modelo
     // =======================================================
+
+    // !REMOVER: Helper para os eixos 
+    var axesHelper = new THREE.AxesHelper( 5 );
+    scene.add( axesHelper );
+    // The X axis is red. The Y axis is green. The Z axis is blue.
     
-    var mtl = new  THREE.MTLLoader;
-    mtl.setPath('assets/');
-    mtl.load('ivysaur/Pokemon.mtl', function(materials) {
-
+    // POKÉMON
+    var mtlIvysaur = new  THREE.MTLLoader;
+    mtlIvysaur.setPath('assets/');
+    mtlIvysaur.load('ivysaur/Pokemon.mtl', function(materials) {
+        
         materials.preload();
-
-        var obj = new THREE.OBJLoader;
-        obj.setMaterials(materials);
-        obj.setPath('assets/');
-        obj.load('ivysaur/Pokemon.obj', function(object) {
+        
+        var objIvysaur = new THREE.OBJLoader;
+        objIvysaur.setMaterials(materials);
+        objIvysaur.setPath('assets/');
+        objIvysaur.load('ivysaur/Pokemon.obj', function(object) {
             
             // Adiciona o shading
             object.traverse(function(child) {
@@ -98,7 +103,34 @@ function init() {
                 }
             });
 
-            scene.add(object);
+            var ivysaur3D = new THREE.Object3D;
+            ivysaur3D.add(object);
+            ivysaur3D.scale.set(1, 1, 1);       // Escala
+            ivysaur3D.position.set(0, 0, 2);    // Posição
+
+            scene.add(ivysaur3D);
+        });
+
+    });
+    
+    // POKEBOLA
+    var mtlPokeball = new  THREE.MTLLoader;
+    mtlPokeball.setPath('assets/');
+    mtlPokeball.load('pokeball/Pokeball_OBJ/Pokeball_OBJ.mtl', function(materials) {
+
+        materials.preload();
+
+        var objPokeball = new THREE.OBJLoader;
+        objPokeball.setMaterials(materials);
+        objPokeball.setPath('assets/');
+        objPokeball.load('pokeball/Pokeball_OBJ/Pokeball_OBJ.obj', function(object) {
+
+            var pokeball3D = new THREE.Object3D;
+            pokeball3D.add(object);
+            pokeball3D.scale.set(0.0025, 0.0025, 0.0025);   // Escala
+
+            scene.add(pokeball3D);
+                        
         });
 
     });
