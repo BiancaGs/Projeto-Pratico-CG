@@ -40,7 +40,7 @@ function init() {
     camera.position.x = 4;
     camera.position.y = 4;
     camera.position.z = 0;
-    
+
     // =======================================================
     // Cena
     // =======================================================
@@ -84,7 +84,7 @@ function init() {
     scene.add( axesHelper );
     // The X axis is red. The Y axis is green. The Z axis is blue.
     
-    // POKÉMON
+    // IVYSAUR
     var mtlIvysaur = new  THREE.MTLLoader;
     mtlIvysaur.setPath('assets/');
     mtlIvysaur.load('ivysaur/Pokemon.mtl', function(materials) {
@@ -105,25 +105,47 @@ function init() {
 
             var ivysaur3D = new THREE.Object3D;
             ivysaur3D.add(object);
-            ivysaur3D.scale.set(1, 1, 1);       // Escala
-            ivysaur3D.position.set(0, 0, 2);    // Posição
+            ivysaur3D.scale.set(0.99, 0.99, 0.99);          // Escala
+            ivysaur3D.position.set(0, 0, 2);                // Posição
 
             scene.add(ivysaur3D);
         });
 
     });
+
+    // BULBASAUR
+    var objBulbasaur = new THREE.OBJLoader;
+    // objBulbasaur.setMaterials(materials);
+    objBulbasaur.setPath('assets/');
+    objBulbasaur.load('bulbasaur/bulbasaur.obj', function(object) {
+        
+        // Adiciona o shading
+        object.traverse(function(child) {
+            if (child instanceof THREE.Mesh) {
+                child.material = material;
+            }
+        });
+
+        var bulbasaur3D = new THREE.Object3D;
+        bulbasaur3D.add(object);
+        bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
+        bulbasaur3D.position.set(2, 0, 2);                  // Posição
+        bulbasaur3D.rotateY(135);                           // Rotação
+
+        scene.add(bulbasaur3D);
+    });
     
     // POKEBOLA
     var mtlPokeball = new  THREE.MTLLoader;
     mtlPokeball.setPath('assets/');
-    mtlPokeball.load('pokeball/Pokeball_OBJ/Pokeball_OBJ.mtl', function(materials) {
+    mtlPokeball.load('pokeball/pokeball.mtl', function(materials) {
 
         materials.preload();
 
         var objPokeball = new THREE.OBJLoader;
         objPokeball.setMaterials(materials);
         objPokeball.setPath('assets/');
-        objPokeball.load('pokeball/Pokeball_OBJ/Pokeball_OBJ.obj', function(object) {
+        objPokeball.load('pokeball/pokeball.obj', function(object) {
 
             var pokeball3D = new THREE.Object3D;
             pokeball3D.add(object);
