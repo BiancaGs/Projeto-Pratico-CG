@@ -1,0 +1,195 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+newmtl vray_01_-_Default
+Ka  0.0 0.0 0.0
+Kd  0.7 0.7 0.7
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Hinge
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Pokeball (11) to come 
+#
+newmtl Ball_Top
+Ka  0.0 0.0 0.0
+Kd  0.8 0.0 0.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Ball_Bottom
+Ka  0.0 0.0 0.0
+Kd  1.0 1.0 1.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Ball_Interior
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.2
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  0.0
+illum 2
+#
+newmtl Interior_Lights
+Ka  0.0 0.0 0.0
+Kd  1.0 0.6 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Interior_Mirrors
+Ka  0.0 0.0 0.0
+Kd  0.0 0.3 0.5
+Ks  0.6 0.6 0.6
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Interior_Trap
+Ka  0.0 0.0 0.0
+Kd  0.2 0.5 0.2
+Ks  0.3 0.4 0.3
+d  0.9
+Ns  10.0
+illum 2
+#
+newmtl Button___Light
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Exterior_Ring
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  0.1 0.1 0.1
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Button_Ring
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Mirror_Frames
+Ka  0.0 0.0 0.0
+Kd  0.2 0.2 0.2
+Ks  0.1 0.1 0.1
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Hinge
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Pokeball done 
+#
+# Multi/Sub Material__21 (10) to come 
+#
+newmtl Ball_Top
+Ka  0.0 0.0 0.0
+Kd  0.8 0.0 0.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Metalic_White
+Ka  0.0 0.0 0.0
+Kd  1.0 1.0 1.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Ball_Interior
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.2
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Interior_Lights
+Ka  0.0 0.0 0.0
+Kd  1.0 0.6 0.0
+Ks  1.0 1.0 1.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Interior_Mirrors
+Ka  0.0 0.0 0.0
+Kd  0.0 0.3 0.5
+Ks  0.6 0.6 0.6
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Interior_Trap
+Ka  0.0 0.0 0.0
+Kd  0.2 0.5 0.2
+Ks  0.3 0.4 0.3
+d  0.9
+Ns  10.0
+illum 2
+#
+newmtl Button___Light
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Exterior_Ring
+Ka  0.0 0.0 0.0
+Kd  0.1 0.1 0.1
+Ks  0.1 0.1 0.1
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Button_Ring
+Ka  0.0 0.0 0.0
+Kd  0.6 0.6 0.6
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Mirror_Frames
+Ka  0.0 0.0 0.0
+Kd  0.2 0.2 0.2
+Ks  0.1 0.1 0.1
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Material__21 done 
+#
+# EOF
