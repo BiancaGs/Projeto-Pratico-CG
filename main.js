@@ -36,14 +36,11 @@ function init() {
     // Camera
     // =======================================================
 
-    var viewSize = 1080;
-    var aspect = window.innerWidth / window.innerHeight;
-    camera = new THREE.OrthographicCamera( aspect*viewSize / -2, aspect*viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
+    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
     camera.position.x = 4;
     camera.position.y = 4;
     camera.position.z = 0;
-    camera.zoom = 120;
-    camera.updateProjectionMatrix();
+
     
     // =======================================================
     // Cena
@@ -204,14 +201,44 @@ function render() {
 // INTERAÇÃO COM O USUÁRIO
 // =======================================================
 
-$('#perspectiva').click(function() {
+$(document).ready(function() {
 
-
-
-});
-
-$('#ortografica').click(function() {
-
+    $('#perspectiva').click(function() {
     
+        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
+        camera.position.x = 4;
+        camera.position.y = 4;
+        camera.position.z = 0;
+        
+        renderer.clear();
+        renderer.render(scene, camera);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableZoom = false;
+    
+    });
+    
+    $('#ortografica').click(function() {
+    
+        var viewSize = 1080;
+        var aspect = window.innerWidth / window.innerHeight;
+        camera = new THREE.OrthographicCamera( aspect*viewSize / -2, aspect*viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
+        camera.position.x = 4;
+        camera.position.y = 4;
+        camera.position.z = 0;
+        camera.zoom = 120;
+        camera.updateProjectionMatrix();
+        
+        renderer.clear();
+        renderer.render(scene, camera);
+
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.25;
+        controls.enableZoom = false;
+    
+    });
 
 });
