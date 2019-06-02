@@ -37,10 +37,9 @@ function init() {
     // =======================================================
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
-    camera.position.x = 4;
+    camera.position.x = 4;   
     camera.position.y = 4;
     camera.position.z = 0;
-
     
     // =======================================================
     // Cena
@@ -225,8 +224,8 @@ $(document).ready(function() {
         var viewSize = 1080;
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.OrthographicCamera( aspect*viewSize / -2, aspect*viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
-        camera.position.x = 4;
-        camera.position.y = 4;
+        camera.position.x = -5;
+        camera.position.y = 5;
         camera.position.z = 0;
         camera.zoom = 120;
         camera.updateProjectionMatrix();
