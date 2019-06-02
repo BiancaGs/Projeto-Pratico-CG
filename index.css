@@ -1,0 +1,32 @@
+.comandos {
+    position: absolute;
+    top: 0;
+    right: 40px;
+}
+
+ul.comandos {
+    list-style-type: none;
+    padding: 0;
+}
+
+ul.comandos li.comando:not(:first-of-type) {
+    margin-top: 3px;
+}
+.btn-comando {
+    padding: 10px;
+    border: 4px solid lightgrey;
+    border-radius: 7px;
+    min-width: 100px;
+}
+.btn-comando:hover, .btn-comando:focus {
+    cursor: pointer;
+    background-color: grey;
+    color: white;
+}
+button:active {
+    transform: translateY(1px);
+    filter: saturate(150%);
+}
+button:focus {
+    outline: 0;
+}
