@@ -89,6 +89,21 @@ function init() {
     scene.add( axesHelper );
     // The X axis is red. The Y axis is green. The Z axis is blue.
 
+    
+    // Texturas
+    var loader = new THREE.TextureLoader();
+
+    var materialIvysaur = new THREE.MeshPhongMaterial({
+        color: 0xeeeeee,
+        specular: 0x333333,
+        shininess: 15,
+        map: loader.load("assets/ivysaur/textures/Final_Pokemon_Diffuse.jpg"),
+        specularMap: loader.load("assets/ivysaur/textures/Final_Pokemon_Specular.jpg"),
+        normalMap: loader.load("assets/ivysaur/textures/Final_Pokemon_Normal.jpg"),
+        alphaMap: loader.load("assets/ivysaur/textures/Final_Pokemon_Glossiness.jpg")
+    });
+    
+
     // IVYSAUR
     var mtlIvysaur = new  THREE.MTLLoader;
     mtlIvysaur.setPath('assets/');
@@ -101,11 +116,9 @@ function init() {
         objIvysaur.setPath('assets/');
         objIvysaur.load('ivysaur/Pokemon.obj', function(object) {
             
-            // Adiciona o shading
-            object.traverse(function(child) {
-                if (child instanceof THREE.Mesh) {
-                    child.material = material;
-                }
+            // Adiciona a textura
+            object.traverse(function (node) {
+                if ( node.isMesh ) node.material = materialIvysaur;
             });
 
             var ivysaur3D = new THREE.Object3D;
