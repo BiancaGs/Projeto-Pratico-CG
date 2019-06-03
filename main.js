@@ -37,28 +37,33 @@ function init() {
     // =======================================================
 
     camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
-    camera.position.x = 4;   
-    camera.position.y = 4;
-    camera.position.z = 0;
+    camera.position.set(4,4,0);
     
     // =======================================================
     // Cena
     // =======================================================
     
     scene = new THREE.Scene();
-    ambient = new THREE.AmbientLight(0xcccccc, 0.4);//(0xffffff, 1.0);
     
     scene.add(camera);
-    scene.add(ambient);
 
+    light = new THREE.AmbientLight( 'white' ); // soft white light
+    scene.add( light );
     
     // =======================================================
     // Plano
     // =======================================================
 
+    var texturaPlano = new THREE.ImageUtils.loadTexture('img/grass.jpg');
+    texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
+    texturaPlano.repeat.set(5, 5);
+    var materialPlano = new THREE.MeshBasicMaterial({
+        map: texturaPlano,
+        side: THREE.DoubleSide
+    });
+
     var geo = new THREE.PlaneBufferGeometry(10, 10, 8, 8);
-    var mat = new THREE.MeshBasicMaterial({ color: 'lightgrey', side: THREE.DoubleSide });
-    var plane = new THREE.Mesh(geo, mat);
+    var plane = new THREE.Mesh(geo, materialPlano);
     plane.rotateX( - Math.PI / 2);
 
     scene.add(plane);
@@ -83,7 +88,7 @@ function init() {
     var axesHelper = new THREE.AxesHelper( 5 );
     scene.add( axesHelper );
     // The X axis is red. The Y axis is green. The Z axis is blue.
-    
+
     // IVYSAUR
     var mtlIvysaur = new  THREE.MTLLoader;
     mtlIvysaur.setPath('assets/');
@@ -129,7 +134,7 @@ function init() {
         var bulbasaur3D = new THREE.Object3D;
         bulbasaur3D.add(object);
         bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
-        bulbasaur3D.position.set(2, 0, 2);                  // Posição
+        bulbasaur3D.position.set(2, 0.01, 2);                  // Posição
         bulbasaur3D.rotateY(135);                           // Rotação
 
         scene.add(bulbasaur3D);
@@ -179,7 +184,7 @@ function init() {
     controls = new THREE.OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
-    controls.enableZoom = false;
+    controls.enableZoom = true;
 
 }
 
@@ -205,9 +210,7 @@ $(document).ready(function() {
     $('#perspectiva').click(function() {
     
         camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
-        camera.position.x = 4;
-        camera.position.y = 4;
-        camera.position.z = 0;
+        camera.position.set(4,4,0);
         
         renderer.clear();
         renderer.render(scene, camera);
@@ -215,7 +218,7 @@ $(document).ready(function() {
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.25;
-        controls.enableZoom = false;
+        controls.enableZoom = true;
     
     });
     
@@ -224,9 +227,7 @@ $(document).ready(function() {
         var viewSize = 1080;
         var aspect = window.innerWidth / window.innerHeight;
         camera = new THREE.OrthographicCamera( aspect*viewSize / -2, aspect*viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
-        camera.position.x = -5;
-        camera.position.y = 5;
-        camera.position.z = 0;
+        camera.position.set(-5,5,0);
         camera.zoom = 120;
         camera.updateProjectionMatrix();
         
@@ -236,7 +237,7 @@ $(document).ready(function() {
         controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.25;
-        controls.enableZoom = false;
+        controls.enableZoom = true;
     
     });
 
