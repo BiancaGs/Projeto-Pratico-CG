@@ -54,9 +54,9 @@ function init() {
     // Plano
     // =======================================================
 
-    var texturaPlano = new THREE.ImageUtils.loadTexture('img/grass.jpg');
+    var texturaPlano = new THREE.ImageUtils.loadTexture('img/grass_1.jpg');
     texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
-    texturaPlano.repeat.set(5, 5);
+    texturaPlano.repeat.set(4, 4);
     var materialPlano = new THREE.MeshBasicMaterial({
         map: texturaPlano,
         side: THREE.DoubleSide
@@ -242,3 +242,4 @@ $(document).ready(function() {
     });
 
 });
+
