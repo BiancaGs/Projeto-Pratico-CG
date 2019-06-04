@@ -87,7 +87,7 @@ function init() {
     // !REMOVER: Helper para os eixos 
     var axesHelper = new THREE.AxesHelper( 5 );
     scene.add( axesHelper );
-    // The X axis is red. The Y axis is green. The Z axis is blue.
+    //? The X axis is red. The Y axis is green. The Z axis is blue.
 
     
     // Texturas
@@ -121,6 +121,13 @@ function init() {
                 if ( node.isMesh ) node.material = materialIvysaur;
             });
 
+            // // Adiciona o shader
+            // object.traverse(function(child) {
+            //     if (child instanceof THREE.Mesh) {
+            //         child.material = material;
+            //     }
+            // });
+
             var ivysaur3D = new THREE.Object3D;
             ivysaur3D.add(object);
             ivysaur3D.scale.set(0.99, 0.99, 0.99);          // Escala
@@ -131,27 +138,32 @@ function init() {
 
     });
 
+
     // BULBASAUR
-    var objBulbasaur = new THREE.OBJLoader;
-    // objBulbasaur.setMaterials(materials);
-    objBulbasaur.setPath('assets/');
-    objBulbasaur.load('bulbasaur/bulbasaur.obj', function(object) {
+    var mtlBulbasaur = new  THREE.MTLLoader;
+    mtlBulbasaur.setPath('assets/');
+    mtlBulbasaur.load('bulbasaur/teste/bulbasaur.mtl', function(materials) {
         
-        // Adiciona o shading
-        object.traverse(function(child) {
-            if (child instanceof THREE.Mesh) {
-                child.material = material;
-            }
+        materials.preload();
+        
+        var objBulbasaur = new THREE.OBJLoader;
+        objBulbasaur.setMaterials(materials);
+        objBulbasaur.setPath('assets/');
+        objBulbasaur.load('bulbasaur/teste/bulbasaur.obj', function(object) {
+
+            // As texturas vêm do MTL!
+
+            var bulbasaur3D = new THREE.Object3D;
+            bulbasaur3D.add(object);
+            bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
+            bulbasaur3D.position.set(3, 0.01, 1);               // Posição
+            bulbasaur3D.rotateY(135);                           // Rotação
+
+            scene.add(bulbasaur3D);
         });
 
-        var bulbasaur3D = new THREE.Object3D;
-        bulbasaur3D.add(object);
-        bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
-        bulbasaur3D.position.set(2, 0.01, 2);                  // Posição
-        bulbasaur3D.rotateY(135);                           // Rotação
-
-        scene.add(bulbasaur3D);
     });
+
     
     // POKEBOLA
     var mtlPokeball = new  THREE.MTLLoader;
