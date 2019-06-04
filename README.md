@@ -10,3 +10,4 @@
 ## Bibliotecas
 
 - THREE.js
+- JQuery
