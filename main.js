@@ -284,25 +284,32 @@ function render() {
 
 function Teclado() {
 
-    var velocidade = 0.1;
+    var incremento = 0.1;
+    var novaPosicao;
 
     // Teclas: W A S D
 
     switch (event.keyCode) {
         case 65:    // A : esquerda
-            pokeball3D.position.x += velocidade;
+            pokeball3D.position.x += incremento;
             break;
 
         case 87:    // W : cima
-            pokeball3D.position.y += velocidade;
+            novaPosicao = pokeball3D.position.y + incremento;
+            if (novaPosicao > 1.0) // limita para 10 unidades
+                break;
+            pokeball3D.position.y = novaPosicao;
             break;
 
         case 68:    // D : direita
-            pokeball3D.position.x -= velocidade;
+            pokeball3D.position.x -= incremento;
             break;
 
         case 83:    // S : baixo
-            pokeball3D.position.y -= velocidade;
+            novaPosicao = pokeball3D.position.y - incremento;
+            if (novaPosicao < 0) // limita para não deixar passar do plano
+                break;
+            pokeball3D.position.y = novaPosicao;
         break;
     
         default:
