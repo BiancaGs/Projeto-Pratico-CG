@@ -2,9 +2,11 @@
 
 ## Integrantes do Grupo
 
-- Bianca Gomes Rodrigues - RA: 743512
-- Pietro Zuntini Bonfim - RA: 743588
+| Nome                   | RA     | E-Mail                  |
+|------------------------|--------|-------------------------|
+| Bianca Gomes Rodrigues | 743512 | bgsrd@outlook.com       |
+| Pietro Zuntini Bonfim  | 743588 | pietrozuntini@gmail.com |
 
-## Bibliotecas Utilizadas
+## Bibliotecas
 
 - THREE.js
