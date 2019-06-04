@@ -1,4 +1,8 @@
 /// <reference path='node_modules/three/build/three.js' />
+/// <reference path='node_modules/three/examples/js/WebGL.js' />
+/// <reference path='node_modules/three/examples/js/loaders/OBJLoader.js' />
+/// <reference path='node_modules/three/examples/js/loaders/MTLLoader.js' />
+/// <reference path='node_modules/three/examples/js/controls/OrbitControls.js' />
 
 // Verifica se foi possível inicializar o WebGL
 if (!WEBGL.isWebGLAvailable()) {
