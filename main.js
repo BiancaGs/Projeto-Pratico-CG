@@ -142,14 +142,14 @@ function init() {
     // BULBASAUR
     var mtlBulbasaur = new  THREE.MTLLoader;
     mtlBulbasaur.setPath('assets/');
-    mtlBulbasaur.load('bulbasaur/teste/bulbasaur.mtl', function(materials) {
+    mtlBulbasaur.load('bulbasaur/Bulbasaur/bulbasaur.mtl', function(materials) {
         
         materials.preload();
         
         var objBulbasaur = new THREE.OBJLoader;
         objBulbasaur.setMaterials(materials);
         objBulbasaur.setPath('assets/');
-        objBulbasaur.load('bulbasaur/teste/bulbasaur.obj', function(object) {
+        objBulbasaur.load('bulbasaur/Bulbasaur/bulbasaur.obj', function(object) {
 
             // As texturas vêm do MTL!
 
