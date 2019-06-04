@@ -114,27 +114,40 @@ function init() {
         var objIvysaur = new THREE.OBJLoader;
         objIvysaur.setMaterials(materials);
         objIvysaur.setPath('assets/');
-        objIvysaur.load('ivysaur/Pokemon.obj', function(object) {
+        objIvysaur.load(
             
-            // Adiciona a textura
-            object.traverse(function (node) {
-                if ( node.isMesh ) node.material = materialIvysaur;
-            });
+            // URL
+            'ivysaur/Pokemon.obj', 
+            
+            // Chamado quando o objeto foi carregado
+            function(object) {
+                
+                // Adiciona a textura
+                object.traverse(function (node) {
+                    if ( node.isMesh ) node.material = materialIvysaur;
+                });
 
-            // // Adiciona o shader
-            // object.traverse(function(child) {
-            //     if (child instanceof THREE.Mesh) {
-            //         child.material = material;
-            //     }
-            // });
+                // // Adiciona o shader
+                // object.traverse(function(child) {
+                //     if (child instanceof THREE.Mesh) {
+                //         child.material = material;
+                //     }
+                // });
 
-            var ivysaur3D = new THREE.Object3D;
-            ivysaur3D.add(object);
-            ivysaur3D.scale.set(0.99, 0.99, 0.99);          // Escala
-            ivysaur3D.position.set(0, 0, 2);                // Posição
+                var ivysaur3D = new THREE.Object3D;
+                ivysaur3D.add(object);
+                ivysaur3D.scale.set(0.99, 0.99, 0.99);          // Escala
+                ivysaur3D.position.set(0, 0, 2);                // Posição
 
-            scene.add(ivysaur3D);
-        });
+
+                scene.add(ivysaur3D);
+            },
+
+            // Mostra o progresso
+            function(xhr) {
+                console.log( 'Ivysaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+            }
+        );
 
     });
 
@@ -149,18 +162,31 @@ function init() {
         var objBulbasaur = new THREE.OBJLoader;
         objBulbasaur.setMaterials(materials);
         objBulbasaur.setPath('assets/');
-        objBulbasaur.load('bulbasaur/Bulbasaur/bulbasaur.obj', function(object) {
+        objBulbasaur.load(
+            
+            // URL
+            'bulbasaur/Bulbasaur/bulbasaur.obj', 
+            
+            // Chamado quando o objeto foi carregado
+            function(object) {
 
-            // As texturas vêm do MTL!
+                // As texturas vêm do MTL!
 
-            var bulbasaur3D = new THREE.Object3D;
-            bulbasaur3D.add(object);
-            bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
-            bulbasaur3D.position.set(3, 0.01, 1);               // Posição
-            bulbasaur3D.rotateY(135);                           // Rotação
+                var bulbasaur3D = new THREE.Object3D;
+                bulbasaur3D.add(object);
+                bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
+                bulbasaur3D.position.set(3, 0.01, 1);               // Posição
+                bulbasaur3D.rotateY(135);                           // Rotação
 
-            scene.add(bulbasaur3D);
-        });
+
+                scene.add(bulbasaur3D);
+            },
+
+            // Mostra o progresso
+            function(xhr) {
+                console.log( 'Bulbasaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+            }
+        );
 
     });
 
@@ -175,15 +201,27 @@ function init() {
         var objPokeball = new THREE.OBJLoader;
         objPokeball.setMaterials(materials);
         objPokeball.setPath('assets/');
-        objPokeball.load('pokeball/pokeball.obj', function(object) {
+        objPokeball.load(
+            
+            // URL
+            'pokeball/pokeball.obj', 
+            
+            // Chamado quando o objeto foi carregado
+            function(object) {
 
-            var pokeball3D = new THREE.Object3D;
-            pokeball3D.add(object);
-            pokeball3D.scale.set(0.0025, 0.0025, 0.0025);   // Escala
+                var pokeball3D = new THREE.Object3D;
+                pokeball3D.add(object);
+                pokeball3D.scale.set(0.0025, 0.0025, 0.0025);   // Escala
 
-            scene.add(pokeball3D);
-                        
-        });
+
+                scene.add(pokeball3D);   
+            },
+
+            // Mostra o progresso
+            function(xhr) {
+                console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+            }
+        );
 
     });
 
