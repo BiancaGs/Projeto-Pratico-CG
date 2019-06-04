@@ -17,7 +17,14 @@ var ambient;
 var light;
 var canvas = document.getElementById('modelo');
 
+var ivysaur3D = new THREE.Object3D;
+var bulbasaur3D = new THREE.Object3D;
 var pokeball3D = new THREE.Object3D;
+
+var ivysaurCarregado = false;
+var bulbasaurCarregado = false;
+var pokeballCarregado = false;
+
 
 // Chamadas
 init();
@@ -139,12 +146,12 @@ function init() {
                 //         child.material = material;
                 //     }
                 // });
+                
+                object.scale.set(0.99, 0.99, 0.99);          // Escala
+                object.position.set(0, 0, 2);                // Posição
 
-                var ivysaur3D = new THREE.Object3D;
-                ivysaur3D.add(object);
-                ivysaur3D.scale.set(0.99, 0.99, 0.99);          // Escala
-                ivysaur3D.position.set(0, 0, 2);                // Posição
-
+                ivysaur3D = object;
+                ivysaurCarregado = true;
 
                 scene.add(ivysaur3D);
             },
@@ -178,12 +185,12 @@ function init() {
 
                 // As texturas vêm do MTL!
 
-                var bulbasaur3D = new THREE.Object3D;
-                bulbasaur3D.add(object);
-                bulbasaur3D.scale.set(0.025, 0.025, 0.025);         // Escala
-                bulbasaur3D.position.set(3, 0.01, 1);               // Posição
-                bulbasaur3D.rotateY(135);                           // Rotação
+                object.scale.set(0.025, 0.025, 0.025);         // Escala
+                object.position.set(3, 0.01, 1);               // Posição
+                object.rotateY(135);                           // Rotação
 
+                bulbasaur3D = object;
+                bulbasaurCarregado = true;
 
                 scene.add(bulbasaur3D);
             },
@@ -219,8 +226,9 @@ function init() {
                 object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
 
                 pokeball3D = object;
+                pokeballCarregado = true;
 
-                scene.add(object);   
+                scene.add(pokeball3D);
             },
 
             // Mostra o progresso
