@@ -17,6 +17,8 @@ var ambient;
 var light;
 var canvas = document.getElementById('modelo');
 
+var pokeball3D = new THREE.Object3D;
+
 // Chamadas
 init();
 animate();
@@ -213,12 +215,12 @@ function init() {
             // Chamado quando o objeto foi carregado
             function(object) {
 
-                var pokeball3D = new THREE.Object3D;
-                pokeball3D.add(object);
-                pokeball3D.scale.set(0.0025, 0.0025, 0.0025);   // Escala
+                // Propriedades do objeto
+                object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
 
+                pokeball3D = object;
 
-                scene.add(pokeball3D);   
+                scene.add(object);   
             },
 
             // Mostra o progresso
@@ -253,6 +255,13 @@ function init() {
     controls.dampingFactor = 0.25;
     controls.enableZoom = true;
 
+
+    // =======================================================
+    // Movimentação
+    // =======================================================
+
+    document.addEventListener('keydown', Teclado, false);           // Adiciona um event listener
+
 }
 
 // Função animate
@@ -271,6 +280,36 @@ function render() {
 // =======================================================
 // INTERAÇÃO COM O USUÁRIO
 // =======================================================
+
+
+function Teclado() {
+
+    var velocidade = 0.1;
+
+    // Teclas: W A S D
+
+    switch (event.keyCode) {
+        case 65:    // A : esquerda
+            pokeball3D.position.x += velocidade;
+            break;
+
+        case 87:    // W : cima
+            pokeball3D.position.y += velocidade;
+            break;
+
+        case 68:    // D : direita
+            pokeball3D.position.x -= velocidade;
+            break;
+
+        case 83:    // S : baixo
+            pokeball3D.position.y -= velocidade;
+        break;
+    
+        default:
+            break;
+    }
+
+}
 
 $(document).ready(function() {
 
