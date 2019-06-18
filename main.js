@@ -12,7 +12,8 @@ if (!WEBGL.isWebGLAvailable()) {
 
 // Variáveis para utilização posterior
 var container;
-var camera, controls, scene, renderer;
+var cameraPerspectiva, cameraOrtografica;
+var controls, scene, renderer;
 var ambient;
 var light;
 var canvas = document.getElementById('modelo');
@@ -24,6 +25,8 @@ var pokeball3D = new THREE.Object3D;
 var ivysaurCarregado = false;
 var bulbasaurCarregado = false;
 var pokeballCarregado = false;
+
+var cameraAtiva = 0;
 
 
 // Chamadas
@@ -49,19 +52,42 @@ function init() {
     // Camera
     // =======================================================
 
-    camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
-    camera.position.set(4,4,0);
+    var ASPECT_RATIO = window.innerWidth / window.innerHeight;
+    var viewSize = 1080;
+
+    // Camera PERSPECTIVA
+    cameraPerspectiva = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 0.01, 1000); //1000
+    cameraPerspectiva.position.set(4,4,0);
+    cameraPerspectiva.updateMatrixWorld();
+
+    // Camera ORTOGRÁFICA
+    cameraOrtografica = new THREE.OrthographicCamera( ASPECT_RATIO * viewSize / -2, ASPECT_RATIO * viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
+    cameraOrtografica.position.set(-5,5,0);
+    cameraOrtografica.zoom = 120;
+    cameraOrtografica.updateProjectionMatrix();
     
+
     // =======================================================
     // Cena
     // =======================================================
     
     scene = new THREE.Scene();
+    scene.add(cameraPerspectiva);
+    scene.add(cameraOrtografica);
     
-    scene.add(camera);
+    var light = new THREE.HemisphereLight(0xffffff, 0xb3858c, .65);
 
-    light = new THREE.AmbientLight( 'white' ); // soft white light
-    scene.add( light );
+    var shadowLight = new THREE.DirectionalLight(0xffe79d, .7); // Cor, Intensidade
+    // If set to true light will cast dynamic shadows.
+    shadowLight.castShadow = true;
+    
+    var backLight = new THREE.DirectionalLight(0xffffff, .5);
+    backLight.shadowDarkness = 1;
+    backLight.castShadow = true;
+  
+    scene.add(backLight);
+    scene.add(light);
+    scene.add(shadowLight);
     
     // =======================================================
     // Plano
@@ -258,7 +284,7 @@ function init() {
     // Controles
     // =======================================================
 
-    controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls = new THREE.OrbitControls(cameraPerspectiva, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.25;
     controls.enableZoom = true;
@@ -280,8 +306,14 @@ function animate(){
 
 // Funcão render
 function render() {
-    camera.lookAt(scene.position);
-    renderer.render(scene, camera);
+    if (cameraAtiva == 0) {
+        cameraPerspectiva.lookAt(scene.position);
+        renderer.render(scene, cameraPerspectiva);
+    }
+    else {
+        cameraOrtografica.lookAt(scene.position);
+        renderer.render(scene, cameraOrtografica);
+    }
 }
 
 
@@ -329,37 +361,15 @@ function Teclado() {
 $(document).ready(function() {
 
     $('#perspectiva').click(function() {
-    
-        camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.01, 1000); //1000
-        camera.position.set(4,4,0);
-        
-        renderer.clear();
-        renderer.render(scene, camera);
 
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
-        controls.enableZoom = true;
-    
+        cameraAtiva = !cameraAtiva;
+               
     });
     
     $('#ortografica').click(function() {
-    
-        var viewSize = 1080;
-        var aspect = window.innerWidth / window.innerHeight;
-        camera = new THREE.OrthographicCamera( aspect*viewSize / -2, aspect*viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
-        camera.position.set(-5,5,0);
-        camera.zoom = 120;
-        camera.updateProjectionMatrix();
         
-        renderer.clear();
-        renderer.render(scene, camera);
+        cameraAtiva = !cameraAtiva;
 
-        controls = new THREE.OrbitControls(camera, renderer.domElement);
-        controls.enableDamping = true;
-        controls.dampingFactor = 0.25;
-        controls.enableZoom = true;
-    
     });
 
 });
