@@ -406,12 +406,10 @@ function Teclado() {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 87:    // W : cima
-            novaPosicao = pokeball3D.position.y + incremento;
-            if (novaPosicao > 1.0) // limita para 10 unidades
-                break;
-            pokeball3D.position.y = novaPosicao;
-            cameraPokeball.position.y = pokeball3D.position.y+1;
+        case 87:    // W : frente
+            novaPosicao = pokeball3D.position.z + incremento;
+            pokeball3D.position.z = novaPosicao;
+            cameraPokeball.position.z = pokeball3D.position.z-1;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
@@ -421,12 +419,10 @@ function Teclado() {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 83:    // S : baixo
-            novaPosicao = pokeball3D.position.y - incremento;
-            if (novaPosicao < 0) // limita para não deixar passar do plano
-                break;
-            pokeball3D.position.y = novaPosicao;
-            cameraPokeball.position.y = pokeball3D.position.y+1;
+        case 83:    // S : trás
+            novaPosicao = pokeball3D.position.z - incremento;
+            pokeball3D.position.z = novaPosicao;
+            cameraPokeball.position.z = pokeball3D.position.z-1;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
         break;
