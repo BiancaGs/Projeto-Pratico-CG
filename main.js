@@ -20,10 +20,14 @@ var canvas = document.getElementById('modelo');
 
 var ivysaur3D = new THREE.Object3D;
 var bulbasaur3D = new THREE.Object3D;
+var groudon3D = new THREE.Object3D;
+var magnemite3D = new THREE.Object3D;
 var pokeball3D = new THREE.Object3D;
 
 var ivysaurCarregado = false;
 var bulbasaurCarregado = false;
+var groudonCarregado = false;
+var magnemiteCarregado = false;
 var pokeballCarregado = false;
 
 var cameraAtiva = 0;
@@ -75,19 +79,9 @@ function init() {
     scene.add(cameraPokeball);
     
     
-    var light = new THREE.HemisphereLight(0xffffff, 0xb3858c, .65);
-
-    var shadowLight = new THREE.DirectionalLight(0xffe79d, .7); // Cor, Intensidade
-    // If set to true light will cast dynamic shadows.
-    shadowLight.castShadow = true;
-    
-    var backLight = new THREE.DirectionalLight(0xffffff, .5);
-    backLight.shadowDarkness = 1;
-    backLight.castShadow = true;
-  
-    scene.add(backLight);
+    light = new THREE.AmbientLight('white');
     scene.add(light);
-    scene.add(shadowLight);
+
     
     // =======================================================
     // Plano
@@ -101,7 +95,7 @@ function init() {
         side: THREE.DoubleSide
     });
 
-    var geo = new THREE.PlaneBufferGeometry(10, 10, 8, 8);
+    var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
     var plane = new THREE.Mesh(geo, materialPlano);
     plane.rotateX( - Math.PI / 2);
 
@@ -228,6 +222,83 @@ function init() {
         );
 
     });
+
+
+    // GROUDON
+    var objGroudon = new THREE.OBJLoader;
+    objGroudon.setPath('assets/');
+    objGroudon.load(
+        
+        // URL
+        'groudon/groudon.obj', 
+        
+        // Chamado quando o objeto foi carregado
+        function(object) {
+
+            // As texturas vêm do MTL!
+
+            // // Adiciona o shader
+            object.traverse(function(child) {
+                if (child instanceof THREE.Mesh) {
+                    child.material = material;
+                }
+            });
+
+            object.scale.set(0.1, 0.1, 0.1);            // Escala
+            object.position.set(-3, 0.01, 1);           // Posição
+            object.rotateY(THREE.Math.degToRad(90));    // Rotação
+
+            groudon3D = object;
+            groudonCarregado = true;
+
+            scene.add(groudon3D);
+        },
+
+        // Mostra o progresso
+        function(xhr) {
+            console.log( 'Groudon ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+        }
+    );
+
+
+    // MAGNEMITE
+    var mtlMagnemite = new  THREE.MTLLoader;
+    mtlMagnemite.setPath('assets/');
+    mtlMagnemite.load('magnemite/Magnemite.mtl', function(materials) {
+        
+        materials.preload();
+        
+        var objMagnemite = new THREE.OBJLoader;
+        objMagnemite.setMaterials(materials);
+        objMagnemite.setPath('assets/');
+        objMagnemite.load(
+            
+            // URL
+            'magnemite/Magnemite.obj', 
+            
+            // Chamado quando o objeto foi carregado
+            function(object) {
+
+                // As texturas vêm do MTL!
+
+                object.scale.set(0.003, 0.003, 0.003);         // Escala
+                object.position.set(5, 0.01, 1);               // Posição
+                object.rotateY(135);                           // Rotação
+
+                magnemite3D = object;
+                magnemiteCarregado = true;
+
+                scene.add(magnemite3D);
+            },
+
+            // Mostra o progresso
+            function(xhr) {
+                console.log( 'Magnemite ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+            }
+        );
+
+    });
+        
 
     
     // POKEBOLA

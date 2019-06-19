@@ -1,0 +1,87 @@
+# Max2Mtl Version 4.0 Mar 10th, 2001
+#
+# Multi/Sub Material__33 (2) to come 
+#
+newmtl BrushedMetal_SHD
+Ka  0.0 0.0 0.0
+Kd  0.3 0.3 0.3
+Ks  0.4 0.4 0.4
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Standard_14
+Ka  0.0 0.0 0.0
+Kd  1.0 1.0 1.0
+Ks  0.2 0.2 0.2
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Material__33 done 
+#
+# Multi/Sub Material__22 (3) to come 
+#
+newmtl BrushedMetal_SHD
+Ka  0.0 0.0 0.0
+Kd  0.3 0.3 0.3
+Ks  0.4 0.4 0.4
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Magnet_Blue
+Ka  0.0 0.0 0.0
+Kd  0.1 0.3 0.7
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Magnet_Red
+Ka  0.0 0.0 0.0
+Kd  0.8 0.0 0.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Material__22 done 
+#
+# Multi/Sub Material__10 (3) to come 
+#
+newmtl BrushedMetal_SHD
+Ka  0.0 0.0 0.0
+Kd  0.3 0.3 0.3
+Ks  0.4 0.4 0.4
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Magnet_Red
+Ka  0.0 0.0 0.0
+Kd  0.8 0.0 0.0
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+newmtl Magnet_Blue
+Ka  0.0 0.0 0.0
+Kd  0.1 0.3 0.7
+Ks  0.0 0.0 0.0
+d  1.0
+Ns  10.0
+illum 2
+#
+# Multi/Sub Material__10 done 
+#
+newmtl BrushedMetal_SHD
+Ka  0.0 0.0 0.0
+Kd  0.3 0.3 0.3
+Ks  0.4 0.4 0.4
+d  1.0
+Ns  10.0
+illum 2
+#
+# EOF
