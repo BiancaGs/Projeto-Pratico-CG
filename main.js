@@ -61,7 +61,7 @@ function init() {
 
     // Camera PERSPECTIVA
     cameraPerspectiva = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 0.01, 1000); //1000
-    cameraPerspectiva.position.set(4,4,0);
+    cameraPerspectiva.position.set(10,8,4);
     cameraPerspectiva.updateMatrixWorld();
 
     // Camera Pokeball
@@ -79,7 +79,7 @@ function init() {
     scene.add(cameraPokeball);
     
     
-    light = new THREE.AmbientLight('white');
+    light = new THREE.AmbientLight('white', 1.25);
     scene.add(light);
 
     
@@ -454,7 +454,7 @@ $(document).ready(function() {
 });
 
 function posicaoAleatoria(){
-    var pos = Math.floor(Math.random() * 10);
+    var pos = Math.floor(Math.random() * 9);
     pos *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
     return pos;
 }
