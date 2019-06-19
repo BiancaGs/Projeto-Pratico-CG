@@ -168,7 +168,7 @@ function init() {
                 // });
                 
                 object.scale.set(0.99, 0.99, 0.99);          // Escala
-                object.position.set(0, 0, 2);                // Posição
+                object.position.set(posicaoAleatoria(), 0, posicaoAleatoria());                // Posição
 
                 ivysaur3D = object;
                 ivysaurCarregado = true;
@@ -206,7 +206,7 @@ function init() {
                 // As texturas vêm do MTL!
 
                 object.scale.set(0.025, 0.025, 0.025);         // Escala
-                object.position.set(3, 0.01, 1);               // Posição
+                object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
                 object.rotateY(135);                           // Rotação
 
                 bulbasaur3D = object;
@@ -245,7 +245,7 @@ function init() {
             });
 
             object.scale.set(0.1, 0.1, 0.1);            // Escala
-            object.position.set(-3, 0.01, 1);           // Posição
+            object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());           // Posição
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             groudon3D = object;
@@ -282,7 +282,7 @@ function init() {
                 // As texturas vêm do MTL!
 
                 object.scale.set(0.003, 0.003, 0.003);         // Escala
-                object.position.set(5, 0.01, 1);               // Posição
+                object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
                 object.rotateY(135);                           // Rotação
 
                 magnemite3D = object;
@@ -453,3 +453,8 @@ $(document).ready(function() {
 
 });
 
+function posicaoAleatoria(){
+    var pos = Math.floor(Math.random() * 10);
+    pos *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    return pos;
+}
