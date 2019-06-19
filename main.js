@@ -12,7 +12,7 @@ if (!WEBGL.isWebGLAvailable()) {
 
 // Variáveis para utilização posterior
 var container;
-var cameraPerspectiva, cameraOrtografica;
+var cameraPerspectiva, cameraPokeball;
 var controls, scene, renderer;
 var ambient;
 var light;
@@ -60,12 +60,11 @@ function init() {
     cameraPerspectiva.position.set(4,4,0);
     cameraPerspectiva.updateMatrixWorld();
 
-    // Camera ORTOGRÁFICA
-    cameraOrtografica = new THREE.OrthographicCamera( ASPECT_RATIO * viewSize / -2, ASPECT_RATIO * viewSize / 2, viewSize / 2, viewSize / -2, 1, 1000 );
-    cameraOrtografica.position.set(-5,5,0);
-    cameraOrtografica.zoom = 120;
-    cameraOrtografica.updateProjectionMatrix();
-    
+    // Camera Pokeball
+    cameraPokeball = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000); //1000
+    cameraPokeball.position.set(0,1,-2);
+    cameraPokeball.updateMatrixWorld();
+    cameraPokeball.lookAt(0,.75,0);
 
     // =======================================================
     // Cena
@@ -73,7 +72,8 @@ function init() {
     
     scene = new THREE.Scene();
     scene.add(cameraPerspectiva);
-    scene.add(cameraOrtografica);
+    scene.add(cameraPokeball);
+    
     
     var light = new THREE.HemisphereLight(0xffffff, 0xb3858c, .65);
 
@@ -311,8 +311,7 @@ function render() {
         renderer.render(scene, cameraPerspectiva);
     }
     else {
-        cameraOrtografica.lookAt(scene.position);
-        renderer.render(scene, cameraOrtografica);
+        renderer.render(scene, cameraPokeball);
     }
 }
 
@@ -332,6 +331,8 @@ function Teclado() {
     switch (event.keyCode) {
         case 65:    // A : esquerda
             pokeball3D.position.x += incremento;
+            cameraPokeball.position.x = pokeball3D.position.x;
+            cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 87:    // W : cima
@@ -339,10 +340,14 @@ function Teclado() {
             if (novaPosicao > 1.0) // limita para 10 unidades
                 break;
             pokeball3D.position.y = novaPosicao;
+            cameraPokeball.position.y = pokeball3D.position.y+1;
+            cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 68:    // D : direita
             pokeball3D.position.x -= incremento;
+            cameraPokeball.position.x = pokeball3D.position.x;
+            cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 83:    // S : baixo
@@ -350,6 +355,9 @@ function Teclado() {
             if (novaPosicao < 0) // limita para não deixar passar do plano
                 break;
             pokeball3D.position.y = novaPosicao;
+            cameraPokeball.position.y = pokeball3D.position.y+1;
+            cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
+
         break;
     
         default:
@@ -362,13 +370,13 @@ $(document).ready(function() {
 
     $('#perspectiva').click(function() {
 
-        cameraAtiva = !cameraAtiva;
+        cameraAtiva = 0;
                
     });
     
     $('#ortografica').click(function() {
         
-        cameraAtiva = !cameraAtiva;
+        cameraAtiva = 1;
 
     });
 
