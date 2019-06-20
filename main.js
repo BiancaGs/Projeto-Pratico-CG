@@ -12,25 +12,30 @@ if (!WEBGL.isWebGLAvailable()) {
 
 // Variáveis para utilização posterior
 var container;
+
+// Câmera
 var cameraPerspectiva, cameraPokeball;
+var cameraAtiva = 0;
+
 var controls, scene, renderer;
 var ambient;
 var light;
 var canvas = document.getElementById('modelo');
 
+// Objetos
 var ivysaur3D = new THREE.Object3D;
 var bulbasaur3D = new THREE.Object3D;
 var groudon3D = new THREE.Object3D;
 var magnemite3D = new THREE.Object3D;
 var pokeball3D = new THREE.Object3D;
 
+// Para uso do loader
 var ivysaurCarregado = false;
 var bulbasaurCarregado = false;
 var groudonCarregado = false;
 var magnemiteCarregado = false;
 var pokeballCarregado = false;
-
-var cameraAtiva = 0;
+var flagCarregado = 0;
 
 
 // Chamadas
@@ -379,12 +384,23 @@ function animate(){
 
 // Funcão render
 function render() {
-    if (cameraAtiva == 0) {
-        cameraPerspectiva.lookAt(scene.position);
-        renderer.render(scene, cameraPerspectiva);
+    if (flagCarregado == 0) {
+        if (ivysaurCarregado && bulbasaurCarregado && groudonCarregado && magnemiteCarregado && pokeballCarregado) {
+            flagCarregado = 1;
+        }
     }
     else {
-        renderer.render(scene, cameraPokeball);
+
+        // Retira o overlay
+        $('.overlay').hide();
+
+        if (cameraAtiva == 0) {
+            cameraPerspectiva.lookAt(scene.position);
+            renderer.render(scene, cameraPerspectiva);
+        }
+        else {
+            renderer.render(scene, cameraPokeball);
+        }
     }
 }
 
