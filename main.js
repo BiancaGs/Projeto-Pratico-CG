@@ -365,7 +365,9 @@ function init() {
     // Movimentação
     // =======================================================
 
-    document.addEventListener('keydown', Teclado, false);           // Adiciona um event listener
+    // Event listeners
+    document.addEventListener('keydown', Teclado, false);
+    window.addEventListener( 'resize', onWindowResize, false );
 
 }
 
@@ -391,6 +393,14 @@ function render() {
 // INTERAÇÃO COM O USUÁRIO
 // =======================================================
 
+function onWindowResize() {
+
+    cameraPerspectiva.aspect = window.innerWidth / window.innerHeight;
+    cameraPerspectiva.updateProjectionMatrix();
+
+    renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
 
 function Teclado() {
 
