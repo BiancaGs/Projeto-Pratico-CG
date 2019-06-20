@@ -466,7 +466,7 @@ function Teclado() {
         case 87:    // W : frente
             novaPosicao = pokeball3D.position.z + incremento;
             pokeball3D.position.z = novaPosicao;
-            cameraPokeball.position.z = pokeball3D.position.z-1;
+            cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
@@ -479,7 +479,7 @@ function Teclado() {
         case 83:    // S : trás
             novaPosicao = pokeball3D.position.z - incremento;
             pokeball3D.position.z = novaPosicao;
-            cameraPokeball.position.z = pokeball3D.position.z-1;
+            cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
         break;
