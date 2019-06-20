@@ -36,12 +36,17 @@ button:focus {
    ======================================================= */
 
 .overlay {
+    z-index: 2;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
     position: fixed;
-    background: #222;
+    background: lightgrey;
+    background-image: url(img/PokemonCatch.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .overlay__inner {
@@ -55,7 +60,7 @@ button:focus {
 .overlay__content {
     left: 50%;
     position: absolute;
-    top: 50%;
+    top: 62%;
     transform: translate(-50%, -50%);
 }
 

@@ -37,6 +37,9 @@ var magnemiteCarregado = false;
 var pokeballCarregado = false;
 var flagCarregado = 0;
 
+var porcIvysaur = 0, porcBulba = 0, porcGroudon = 0, porcMagnemite = 0, porcPokeball = 0;
+var porcentagem = 0;    // Média das porcentagens
+
 
 // Chamadas
 init();
@@ -183,6 +186,10 @@ function init() {
 
             // Mostra o progresso
             function(xhr) {
+                porcIvysaur = xhr.loaded / xhr.total * 100;
+                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+                console.log(porcentagem);
+                
                 console.log( 'Ivysaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
@@ -222,6 +229,10 @@ function init() {
 
             // Mostra o progresso
             function(xhr) {
+                porcBulba = xhr.loaded / xhr.total * 100;
+                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+                console.log(porcentagem);
+                
                 console.log( 'Bulbasaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
@@ -261,6 +272,10 @@ function init() {
 
         // Mostra o progresso
         function(xhr) {
+            porcGroudon = xhr.loaded / xhr.total * 100;
+            porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+            console.log(porcentagem);
+            
             console.log( 'Groudon ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
         }
     );
@@ -298,6 +313,10 @@ function init() {
 
             // Mostra o progresso
             function(xhr) {
+                porcMagnemite = xhr.loaded / xhr.total * 100;
+                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+                console.log(porcentagem);
+                
                 console.log( 'Magnemite ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
@@ -335,6 +354,10 @@ function init() {
 
             // Mostra o progresso
             function(xhr) {
+                porcPokeball = xhr.loaded / xhr.total * 100;
+                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+                console.log(porcentagem);
+                
                 console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
