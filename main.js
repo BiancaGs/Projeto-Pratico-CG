@@ -17,9 +17,14 @@ var container;
 var cameraPerspectiva, cameraPokeball;
 var cameraAtiva = 0;
 
+// Controles
 var controls, scene, renderer;
+
+// Luz e sombra
 var ambient;
-var light;
+var light, lightHelper, shadowHelper;
+
+// Canvas
 var canvas = document.getElementById('modelo');
 
 // Objetos
@@ -112,73 +117,61 @@ function init() {
     scene = new THREE.Scene();
     scene.background = new THREE.Color('black');
 
-
     scene.add(cameraPerspectiva);
     scene.add(cameraPokeball);
-    
     
     // ambient = new THREE.AmbientLight('white', 1.25);
     // scene.add(ambient);
 
-    light = new THREE.DirectionalLight(0xffffff, 1);
+    light = new THREE.DirectionalLight(0xffffff, 4);
     light.position.set(20, 20, 20);
-    // light.shadowCameraVisible = true;
     light.castShadow = true;
-
     light.shadow.camera = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000);
-
     light.shadow.mapSize.width = 2048;
     light.shadow.mapSize.height = 2048;
 
+    scene.add(light);
+    scene.add(light.target);
+
+    // Helper da sombra
     var shadowHelper = new THREE.CameraHelper( light.shadow.camera );
     scene.add( shadowHelper );
 
-    // light.shadow.bias = -0.00022;
-    // light.shadowDarkness = 0.5;
-    scene.add(light);
+    // Helper da luz
+    lightHelper = new THREE.DirectionalLightHelper( light, 5, 'white');
+    scene.add( lightHelper );
 
+    
+    // =======================================================
+    // GUI
+    // =======================================================
 
-    var helper = new THREE.DirectionalLightHelper( light, 5, 'white');
-
-    scene.add( helper );
+    var gui = new dat.GUI();
+    gui.add(light, 'intensity', 0, 10, 0.01);                           // Controle da intensidade
+    criarGUILuz(gui, light.position, 'position', updateLight);          // Para a luz
+    // criarGUILuz(gui, light.target.position, 'target', updateLight);  // Para o alvo da luz
 
     
     // =======================================================
     // Plano
     // =======================================================
 
-    // ! READICIONAR
-    // var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
-    // texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
-    // texturaPlano.repeat.set(4, 4);
-    // texturaPlano.anisotropy = 16; // filtro anisotrópico
-    //
-    // var materialPlano = new THREE.MeshPhongMaterial({
-    //     map: texturaPlano,
-    //     side: THREE.DoubleSide
-    // });
-    //
-    // var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
-    // var plane = new THREE.Mesh(geo, materialPlano);
-    // plane.castShadow = true;
-    // plane.receiveShadow = true;
-    // plane.rotateX( - Math.PI / 2);
-    //
-    // scene.add(plane);
+    var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
+    texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
+    texturaPlano.repeat.set(4, 4);
+    texturaPlano.anisotropy = 16; // filtro anisotrópico
 
-    var geometry = new THREE.PlaneBufferGeometry( 20, 20, 32 );
-    var material = new THREE.MeshPhongMaterial( {
-        color: 'lightblue',
+    var materialPlano = new THREE.MeshPhongMaterial({
+        map: texturaPlano,
         side: THREE.DoubleSide
-    } );
-    var plane = new THREE.Mesh(
-        geometry,
-        material
-    );
-    plane.rotateX(THREE.Math.degToRad(-90));
-    plane.receiveShadow = true;
-    scene.add( plane );
+    });
 
+    var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
+    var plane = new THREE.Mesh(geo, materialPlano);
+    plane.receiveShadow = true;
+    plane.rotateX( - Math.PI / 2);
+
+    scene.add(plane);
 
     
     // =======================================================
@@ -597,8 +590,37 @@ $(document).ready(function() {
 
 });
 
+
+/**
+ * Retorna uma posição (número) aleatória
+ * @returns int
+ */
 function posicaoAleatoria(){
     var pos = Math.floor(Math.random() * 9);
     pos *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
     return pos;
 }
+
+/**
+ * Cria os controles na GUI tanto para a posição da luz, quanto do alvo da luz
+ * @param {GUI} gui
+ * @param {Vector3} vector3
+ * @param {String} name
+ * @param {function} onChangeFn
+ */
+function criarGUILuz(gui, vector3, name, onChangeFn) {
+    const folder = gui.addFolder(name);
+    folder.add(vector3, 'x', -200, 20).onChange(onChangeFn);
+    folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
+    folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
+    folder.open();
+}
+
+/**
+ * Atualiza a luz e o helper
+ */
+function updateLight() {
+    light.target.updateMatrixWorld();
+    lightHelper.update();
+}
+  
