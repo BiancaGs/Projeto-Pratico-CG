@@ -63,6 +63,25 @@ function init() {
 
 
     // =======================================================
+    // Renderizador
+    // =======================================================
+
+    renderer = new THREE.WebGLRenderer({
+        canvas: canvas,
+        antialias: true
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(new THREE.Color('white'));
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    // renderer.shadowMapSoft = true;
+
+    container.appendChild(renderer.domElement);
+
+
+    // =======================================================
     // Camera
     // =======================================================
 
@@ -86,33 +105,74 @@ function init() {
     // =======================================================
     
     scene = new THREE.Scene();
+    scene.background = new THREE.Color('black');
+
+
     scene.add(cameraPerspectiva);
     scene.add(cameraPokeball);
     
     
-    light = new THREE.AmbientLight('white', 1.25);
+    // ambient = new THREE.AmbientLight('white', 1.25);
+    // scene.add(ambient);
+
+    light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(20, 20, 20);
+    // light.shadowCameraVisible = true;
+    light.castShadow = true;
+
+    light.shadow.camera = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000);
+
+    // light.shadow.camera.near = 0.5;
+    // light.shadow.camera.far = 500;
+
+    var shadowHelper = new THREE.CameraHelper( light.shadow.camera );
+    scene.add( shadowHelper );
+
+    // light.shadow.bias = -0.00022;
+    // light.shadowDarkness = 0.5;
     scene.add(light);
+
+
+    var helper = new THREE.DirectionalLightHelper( light, 5, 'white');
+
+    scene.add( helper );
 
     
     // =======================================================
     // Plano
     // =======================================================
 
-    var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
-    texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
-    texturaPlano.repeat.set(4, 4);
-    texturaPlano.anisotropy = 16; // filtro anisotrópico
+    // ! READICIONAR
+    // var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
+    // texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
+    // texturaPlano.repeat.set(4, 4);
+    // texturaPlano.anisotropy = 16; // filtro anisotrópico
+    //
+    // var materialPlano = new THREE.MeshBasicMaterial({
+    //     map: texturaPlano,
+    //     side: THREE.DoubleSide
+    // });
+    //
+    // var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
+    // var plane = new THREE.Mesh(geo, materialPlano);
+    // plane.rotateX( - Math.PI / 2);
+    //
+    // scene.add(plane);
 
-    var materialPlano = new THREE.MeshBasicMaterial({
-        map: texturaPlano,
+    var geometry = new THREE.PlaneBufferGeometry( 20, 20, 32 );
+    var material = new THREE.MeshPhongMaterial( {
+        color: 'lightblue',
         side: THREE.DoubleSide
-    });
+    } );
+    var plane = new THREE.Mesh(
+        geometry,
+        material
+    );
+    plane.rotateX(THREE.Math.degToRad(-90));
+    plane.castShadow = true;
+    plane.receiveShadow = true;
+    scene.add( plane );
 
-    var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
-    var plane = new THREE.Mesh(geo, materialPlano);
-    plane.rotateX( - Math.PI / 2);
-
-    scene.add(plane);
 
     
     // =======================================================
@@ -175,6 +235,14 @@ function init() {
                     if ( node.isMesh ) node.material = materialIvysaur;
                 });
 
+                // Sombra
+                object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.receiveShadow = true;
+                        child.castShadow = true;
+                    }
+                });
+
                 // // Adiciona o shader
                 // object.traverse(function(child) {
                 //     if (child instanceof THREE.Mesh) {
@@ -224,6 +292,14 @@ function init() {
 
                 // As texturas vêm do MTL!
 
+                // Sombra
+                object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.receiveShadow = true;
+                        child.castShadow = true;
+                    }
+                });
+
                 object.scale.set(0.025, 0.025, 0.025);         // Escala
                 object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
                 object.rotateY(135);                           // Rotação
@@ -259,6 +335,14 @@ function init() {
         function(object) {
 
             // As texturas vêm do MTL!
+
+            // Sombra
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+                }
+            });
 
             // // Adiciona o shader
             object.traverse(function(child) {
@@ -308,6 +392,14 @@ function init() {
 
                 // As texturas vêm do MTL!
 
+                // Sombra
+                object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.receiveShadow = true;
+                        child.castShadow = true;
+                    }
+                });
+
                 object.scale.set(0.003, 0.003, 0.003);         // Escala
                 object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
                 object.rotateY(135);                           // Rotação
@@ -350,6 +442,14 @@ function init() {
             // Chamado quando o objeto foi carregado
             function(object) {
 
+                // Sombra
+                object.traverse(function (child) {
+                    if (child instanceof THREE.Mesh) {
+                        child.receiveShadow = true;
+                        child.castShadow = true;
+                    }
+                });
+
                 // Propriedades do objeto
                 object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
 
@@ -370,21 +470,6 @@ function init() {
         );
 
     });
-
-
-    // =======================================================
-    // Renderizador
-    // =======================================================
-
-    renderer = new THREE.WebGLRenderer({
-        canvas: canvas, 
-        antialias: true
-    });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColor(new THREE.Color('white'));
-
-    container.appendChild(renderer.domElement);
 
 
     // =======================================================
