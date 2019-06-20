@@ -78,6 +78,11 @@ function init() {
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
     // renderer.shadowMapSoft = true;
 
+    renderer.physicallyCorrectLights = true;
+    renderer.gammaInput = true;
+    renderer.gammaOutput = true;
+    // renderer.toneMapping = ReinhardToneMapping;
+
     container.appendChild(renderer.domElement);
 
 
@@ -122,8 +127,8 @@ function init() {
 
     light.shadow.camera = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000);
 
-    // light.shadow.camera.near = 0.5;
-    // light.shadow.camera.far = 500;
+    light.shadow.mapSize.width = 2048;
+    light.shadow.mapSize.height = 2048;
 
     var shadowHelper = new THREE.CameraHelper( light.shadow.camera );
     scene.add( shadowHelper );
@@ -148,13 +153,15 @@ function init() {
     // texturaPlano.repeat.set(4, 4);
     // texturaPlano.anisotropy = 16; // filtro anisotrópico
     //
-    // var materialPlano = new THREE.MeshBasicMaterial({
+    // var materialPlano = new THREE.MeshPhongMaterial({
     //     map: texturaPlano,
     //     side: THREE.DoubleSide
     // });
     //
     // var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
     // var plane = new THREE.Mesh(geo, materialPlano);
+    // plane.castShadow = true;
+    // plane.receiveShadow = true;
     // plane.rotateX( - Math.PI / 2);
     //
     // scene.add(plane);
