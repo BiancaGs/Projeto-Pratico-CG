@@ -176,7 +176,6 @@ function init() {
         material
     );
     plane.rotateX(THREE.Math.degToRad(-90));
-    plane.castShadow = true;
     plane.receiveShadow = true;
     scene.add( plane );
 
