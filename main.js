@@ -53,12 +53,14 @@ animate();
 // Função init
 function init() {
 
+
     // =======================================================
     // Recuperação do canvas
     // =======================================================
 
     container = document.createElement('div');
     document.body.appendChild(container);
+
 
     // =======================================================
     // Camera
@@ -78,6 +80,7 @@ function init() {
     cameraPokeball.updateMatrixWorld();
     cameraPokeball.lookAt(0,.75,0);
 
+
     // =======================================================
     // Cena
     // =======================================================
@@ -95,9 +98,11 @@ function init() {
     // Plano
     // =======================================================
 
-    var texturaPlano = new THREE.ImageUtils.loadTexture('img/grass_1.jpg');
+    var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
     texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
     texturaPlano.repeat.set(4, 4);
+    texturaPlano.anisotropy = 16; // filtro anisotrópico
+
     var materialPlano = new THREE.MeshBasicMaterial({
         map: texturaPlano,
         side: THREE.DoubleSide
@@ -109,6 +114,7 @@ function init() {
 
     scene.add(plane);
 
+    
     // =======================================================
     // Vertex e Fragment Shaders
     // =======================================================
@@ -120,6 +126,7 @@ function init() {
         vertexShader: vertexShader.textContent,
         fragmentShader: fragmentShader.textContent
     });
+
 
     // =======================================================
     // Modelo
@@ -378,6 +385,7 @@ function init() {
     renderer.setClearColor(new THREE.Color('white'));
 
     container.appendChild(renderer.domElement);
+
 
     // =======================================================
     // Controles
