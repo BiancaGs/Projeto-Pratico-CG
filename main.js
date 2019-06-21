@@ -33,6 +33,8 @@ var bulbasaur3D = new THREE.Object3D;
 var groudon3D = new THREE.Object3D;
 var magnemite3D = new THREE.Object3D;
 var pokeball3D = new THREE.Object3D;
+var sun;
+var sunGlow;
 
 // Para uso do loader
 var ivysaurCarregado = false;
@@ -205,9 +207,9 @@ function init() {
     // Sol
     var solGeometry = new THREE.SphereGeometry( 1, 32, 32 );
     var materialSphere = new THREE.MeshBasicMaterial( {color: 0xFFCC33} );
-    var sol = new THREE.Mesh( solGeometry, materialSphere );
-    sol.position.set(20, 20, 20);
-    scene.add( sol );
+    sun = new THREE.Mesh( solGeometry, materialSphere );
+    sun.position.set(20, 20, 20);
+    scene.add( sun );
 
     var materialSol = new THREE.ShaderMaterial({
         uniforms: {
@@ -223,7 +225,7 @@ function init() {
         transparent: true
     });
 
-    var sunGlow = new THREE.Mesh(solGeometry.clone(), materialSol.clone());
+    sunGlow = new THREE.Mesh(solGeometry.clone(), materialSol.clone());
     sunGlow.position.set(20, 20, 20);
     sunGlow.scale.multiplyScalar(1.2);
     scene.add(sunGlow);
@@ -697,10 +699,17 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
 }
 
 /**
- * Atualiza a luz e o helper
+ * Atualiza a luz e o helper (e o sol)
  */
 function updateLight() {
+
+    // Atualiza a posição do sol e do seu brilho
+    sun.position.copy(light.position);
+    sunGlow.position.copy(light.position);
+
+    // Atualiza a posição de luz e do seu helper
     light.target.updateMatrixWorld();
     lightHelper.update();
+
 }
   
