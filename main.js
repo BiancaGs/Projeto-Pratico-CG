@@ -46,6 +46,11 @@ var porcIvysaur = 0, porcBulba = 0, porcGroudon = 0, porcMagnemite = 0, porcPoke
 var porcentagem = 0;    // Média das porcentagens
 
 
+// Animação
+var clock = new THREE.Clock();
+var mixer;
+var action;
+
 // Chamadas
 init();
 animate();
@@ -423,52 +428,93 @@ function init() {
         
 
     
-    // POKEBOLA
-    var mtlPokeball = new  THREE.MTLLoader;
-    mtlPokeball.setPath('assets/');
-    mtlPokeball.load('pokeball/pokeball.mtl', function(materials) {
+    // // POKEBOLA
+    // var mtlPokeball = new  THREE.MTLLoader;
+    // mtlPokeball.setPath('assets/');
+    // mtlPokeball.load('pokeball/pokeball.mtl', function(materials) {
 
-        materials.preload();
+    //     materials.preload();
 
-        var objPokeball = new THREE.OBJLoader;
-        objPokeball.setMaterials(materials);
-        objPokeball.setPath('assets/');
-        objPokeball.load(
+    //     var objPokeball = new THREE.OBJLoader;
+    //     objPokeball.setMaterials(materials);
+    //     objPokeball.setPath('assets/');
+    //     objPokeball.load(
             
-            // URL
-            'pokeball/pokeball.obj', 
+    //         // URL
+    //         'pokeball/pokeball.obj', 
             
-            // Chamado quando o objeto foi carregado
-            function(object) {
+    //         // Chamado quando o objeto foi carregado
+    //         function(object) {
 
-                // Sombra
-                object.traverse(function (child) {
-                    if (child instanceof THREE.Mesh) {
-                        child.receiveShadow = true;
-                        child.castShadow = true;
-                    }
-                });
+    //             // Sombra
+    //             object.traverse(function (child) {
+    //                 if (child instanceof THREE.Mesh) {
+    //                     child.receiveShadow = true;
+    //                     child.castShadow = true;
+    //                 }
+    //             });
 
-                // Propriedades do objeto
-                object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
+    //             // Propriedades do objeto
+    //             object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
 
-                pokeball3D = object;
-                pokeballCarregado = true;
+    //             pokeball3D = object;
+    //             pokeballCarregado = true;
 
-                scene.add(pokeball3D);
-            },
+    //             scene.add(pokeball3D);
+    //         },
 
-            // Mostra o progresso
-            function(xhr) {
-                porcPokeball = xhr.loaded / xhr.total * 100;
-                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-                console.log(porcentagem);
+    //         // Mostra o progresso
+    //         function(xhr) {
+    //             porcPokeball = xhr.loaded / xhr.total * 100;
+    //             porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+    //             console.log(porcentagem);
                 
-                console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
-            }
-        );
+    //             console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
+    //         }
+    //     );
 
-    });
+    // });
+
+
+    // NOVA POKEBALL
+    var fbxPokeball = new THREE.FBXLoader();
+    fbxPokeball.setPath('assets/');
+    fbxPokeball.load(
+
+        // URL
+        'pokeball/Pokeball2.fbx',
+
+        function (object) {
+
+            mixer = new THREE.AnimationMixer(object);
+
+            console.log(mixer);
+
+            action = mixer.clipAction(object.animations[0]);
+            action.play();
+
+            console.log(object.animations);
+            console.log(action);
+
+            // Sombra
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+                }
+            });
+
+            object.scale.set(0.0015, 0.0015, 0.0015);       // Escala
+
+            pokeball3D = object;
+            pokeballCarregado = true;
+
+            scene.add(object);
+
+        }
+
+    );
+
 
 
     // =======================================================
@@ -508,6 +554,9 @@ function render() {
 
         // Retira o overlay
         $('.overlay').hide();
+
+        var delta = clock.getDelta();
+        if (mixer) mixer.update(delta);
 
         if (cameraAtiva == 0) {
             cameraPerspectiva.lookAt(scene.position);
@@ -565,8 +614,12 @@ function Teclado() {
             pokeball3D.position.z = novaPosicao;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
+            break;
 
-        break;
+        case 79:
+            console.log('play');
+            action.play();
+            break;
     
         default:
             break;
