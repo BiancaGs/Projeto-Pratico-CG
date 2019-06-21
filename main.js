@@ -193,7 +193,7 @@ function init() {
 
 
     // =======================================================
-    // Modelo
+    // Modelos
     // =======================================================
 
     // !REMOVER: Helper para os eixos 
@@ -201,7 +201,34 @@ function init() {
     scene.add( axesHelper );
     //? The X axis is red. The Y axis is green. The Z axis is blue.
 
-    
+
+    // Sol
+    var solGeometry = new THREE.SphereGeometry( 1, 32, 32 );
+    var materialSphere = new THREE.MeshBasicMaterial( {color: 0xFFCC33} );
+    var sol = new THREE.Mesh( solGeometry, materialSphere );
+    sol.position.set(20, 20, 20);
+    scene.add( sol );
+
+    var materialSol = new THREE.ShaderMaterial({
+        uniforms: {
+            "c": { type: "f", value: 1.0 },
+            "p": { type: "f", value: 0.4 },
+            glowColor: { type: "c", value: new THREE.Color(0xFC9601) },
+            viewVector: { type: "v3", value: cameraPerspectiva.position }
+        },
+        vertexShader: $('#vertex-shader-sol').text(),
+        fragmentShader: $('#fragment-shader-sol').text(),
+        side: THREE.FrontSide,
+        blending: THREE.AdditiveBlending,
+        transparent: true
+    });
+
+    var sunGlow = new THREE.Mesh(solGeometry.clone(), materialSol.clone());
+    sunGlow.position.set(20, 20, 20);
+    sunGlow.scale.multiplyScalar(1.2);
+    scene.add(sunGlow);
+
+
     // Texturas
     var loader = new THREE.TextureLoader();
 
