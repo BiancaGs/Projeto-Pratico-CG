@@ -182,13 +182,24 @@ function init() {
 
     
     // =======================================================
-    // Vertex e Fragment Shaders
+    // Vertex e Fragment Shaders (Phong)
     // =======================================================
 
     var vertexShader = document.getElementById("vertex-shader");
-    var fragmentShader = document.getElementById("fragment-shader");
-
+    var fragmentShader = document.getElementById("fragment-shader");    
+    
     var material = new THREE.ShaderMaterial({
+        // Passa os parâmetros para os shaders
+        uniforms: {
+            Ka: { value: 1.0 },
+            Kd: { value: 1.0 },
+            Ks: { value: 1.0 },
+            shininess: { value: 80 },
+            ambientColor: { value: new THREE.Color(0x341900) },
+            diffuseColor: { value: new THREE.Color(0xCC0000) },
+            specularColor: { value: new THREE.Color(0xFFFFFF) },
+            lightPosition: { value: light.position }
+        },
         vertexShader: vertexShader.textContent,
         fragmentShader: fragmentShader.textContent
     });
@@ -213,10 +224,10 @@ function init() {
 
     var materialSol = new THREE.ShaderMaterial({
         uniforms: {
-            "c": { type: "f", value: 1.0 },
-            "p": { type: "f", value: 0.4 },
-            glowColor: { type: "c", value: new THREE.Color(0xFC9601) },
-            viewVector: { type: "v3", value: cameraPerspectiva.position }
+            c: { value: 1.0 },
+            p: { value: 0.4 },
+            glowColor: { value: new THREE.Color(0xFC9601) },
+            viewVector: { value: cameraPerspectiva.position }
         },
         vertexShader: $('#vertex-shader-sol').text(),
         fragmentShader: $('#fragment-shader-sol').text(),
@@ -456,55 +467,6 @@ function init() {
     });
         
 
-    
-    // // POKEBOLA
-    // var mtlPokeball = new  THREE.MTLLoader;
-    // mtlPokeball.setPath('assets/');
-    // mtlPokeball.load('pokeball/pokeball.mtl', function(materials) {
-
-    //     materials.preload();
-
-    //     var objPokeball = new THREE.OBJLoader;
-    //     objPokeball.setMaterials(materials);
-    //     objPokeball.setPath('assets/');
-    //     objPokeball.load(
-            
-    //         // URL
-    //         'pokeball/pokeball.obj', 
-            
-    //         // Chamado quando o objeto foi carregado
-    //         function(object) {
-
-    //             // Sombra
-    //             object.traverse(function (child) {
-    //                 if (child instanceof THREE.Mesh) {
-    //                     child.receiveShadow = true;
-    //                     child.castShadow = true;
-    //                 }
-    //             });
-
-    //             // Propriedades do objeto
-    //             object.scale.set(0.0025, 0.0025, 0.0025);       // Escala
-
-    //             pokeball3D = object;
-    //             pokeballCarregado = true;
-
-    //             scene.add(pokeball3D);
-    //         },
-
-    //         // Mostra o progresso
-    //         function(xhr) {
-    //             porcPokeball = xhr.loaded / xhr.total * 100;
-    //             porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-    //             console.log(porcentagem);
-                
-    //             console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
-    //         }
-    //     );
-
-    // });
-
-
     // NOVA POKEBALL
     var fbxPokeball = new THREE.FBXLoader();
     fbxPokeball.setPath('assets/');
@@ -517,13 +479,8 @@ function init() {
 
             mixer = new THREE.AnimationMixer(object);
 
-            console.log(mixer);
-
             action = mixer.clipAction(object.animations[0]);
             action.play();
-
-            console.log(object.animations);
-            console.log(action);
 
             // Sombra
             object.traverse(function (child) {
@@ -712,4 +669,3 @@ function updateLight() {
     lightHelper.update();
 
 }
-  
