@@ -22,6 +22,7 @@ var controls, scene, renderer;
 
 // Luz e sombra
 var ambient;
+var hemiLight;
 var light, lightHelper, shadowHelper;
 
 // Canvas
@@ -105,6 +106,14 @@ function init() {
 
 
     // =======================================================
+    // Cena
+    // =======================================================
+    
+    scene = new THREE.Scene();
+    // scene.background = new THREE.Color('black');
+
+
+    // =======================================================
     // Camera
     // =======================================================
 
@@ -113,7 +122,7 @@ function init() {
 
     // Camera PERSPECTIVA
     cameraPerspectiva = new THREE.PerspectiveCamera(50, ASPECT_RATIO, 0.01, 1000); //1000
-    cameraPerspectiva.position.set(10,8,4);
+    cameraPerspectiva.position.set(0,10,-20);   
     cameraPerspectiva.updateMatrixWorld();
 
     // Camera Pokeball
@@ -123,19 +132,24 @@ function init() {
     cameraPokeball.lookAt(0,.75,0);
 
 
-    // =======================================================
-    // Cena
-    // =======================================================
-    
-    scene = new THREE.Scene();
-    scene.background = new THREE.Color('black');
-
     scene.add(cameraPerspectiva);
     scene.add(cameraPokeball);
     
+
+    // =======================================================
+    // Luzes
+    // =======================================================
+
+    // Luz de Hemisfério
+    hemiLight = new THREE.HemisphereLight( 0xffffff, 0xffffff, 0.6 );
+    hemiLight.position.set( 0, 500, 0 );
+    scene.add(hemiLight);
+    
+
     // ambient = new THREE.AmbientLight('white', 1.25);
     // scene.add(ambient);
 
+    // Luz Direcional do Sol
     light = new THREE.DirectionalLight(0xffffff, 4);
     light.position.set(20, 20, 20);
     light.castShadow = true;
@@ -151,7 +165,7 @@ function init() {
     scene.add( shadowHelper );
 
     // Helper da luz
-    lightHelper = new THREE.DirectionalLightHelper( light, 5, 'white');
+    lightHelper = new THREE.DirectionalLightHelper( light, 5, 'black');
     scene.add( lightHelper );
 
     
@@ -169,7 +183,7 @@ function init() {
     // Plano
     // =======================================================
 
-    var texturaPlano = new THREE.TextureLoader().load('img/grass_1.jpg');
+    var texturaPlano = new THREE.TextureLoader().load('img/grass2.jpg');
     texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
     texturaPlano.repeat.set(4, 4);
     texturaPlano.anisotropy = 16; // filtro anisotrópico
