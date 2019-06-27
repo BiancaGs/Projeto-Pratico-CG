@@ -1,4 +1,4 @@
-# Atividade 01 - Projeto Prático
+# Projeto Prático
 
 ## Integrantes do Grupo
 
