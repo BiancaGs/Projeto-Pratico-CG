@@ -569,7 +569,7 @@ function render() {
         $('.overlay').hide();
 
         // Atualiza a posição da pokeball conforme a curva definida
-        // posicaoPokeball();
+        posicaoPokeball();
 
         // Aplica a animação na Pokeball
         var delta = clock.getDelta();
