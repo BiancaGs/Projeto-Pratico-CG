@@ -53,6 +53,12 @@ var clock = new THREE.Clock();
 var mixer;
 var action;
 
+// Para as curvas
+var curva;
+var pontos;
+var t = 0;  // Parâmetro do polinômio de Bernstein da Curva de Bézier (vai de 0 até 1)
+
+
 // Chamadas
 init();
 animate();
@@ -493,6 +499,7 @@ function init() {
             object.scale.set(0.0015, 0.0015, 0.0015);       // Escala
 
             pokeball3D = object;
+            pokeball3D.name = 'pokeball';                   // Nome para futura referência
             pokeballCarregado = true;
 
             scene.add(object);
@@ -500,7 +507,27 @@ function init() {
         }
 
     );
+    
 
+    // =======================================================
+    // Curva de Bézier para a Pokebola
+    // =======================================================
+
+    curva = new THREE.CubicBezierCurve3(
+        new THREE.Vector3( -10, 0, 0 ),
+        new THREE.Vector3( -5, 15, 0 ),
+        new THREE.Vector3( 20, 15, 0 ),
+        new THREE.Vector3( 10, 0, 0 )
+    );
+    
+    pontos = curva.getPoints(50);
+    
+    // Linha da curva
+    var g = new THREE.BufferGeometry().setFromPoints( pontos );
+    var m = new THREE.LineBasicMaterial( { color : 0xff0000 } );
+    var linhaCurva = new THREE.Line( g, m );
+    scene.add(linhaCurva);
+    
 
 
     // =======================================================
@@ -523,7 +550,7 @@ function init() {
 
 }
 
-// Função animate
+// Função animate (loop)
 function animate(){
     requestAnimationFrame(animate);
     render();
@@ -541,6 +568,10 @@ function render() {
         // Retira o overlay
         $('.overlay').hide();
 
+        // Atualiza a posição da pokeball conforme a curva definida
+        posicaoPokeball();
+
+        // Aplica a animação na Pokeball
         var delta = clock.getDelta();
         if (mixer) mixer.update(delta);
 
@@ -559,6 +590,9 @@ function render() {
 // INTERAÇÃO COM O USUÁRIO
 // =======================================================
 
+/**
+ * Trata do redimensionamento da tela
+ */
 function onWindowResize() {
 
     cameraPerspectiva.aspect = window.innerWidth / window.innerHeight;
@@ -568,6 +602,9 @@ function onWindowResize() {
 
 }
 
+/**
+ * Trata dos eventos de clique no teclado
+ */
 function Teclado() {
 
     var incremento = 0.1;
@@ -631,6 +668,38 @@ $(document).ready(function() {
 
 
 /**
+ * Atualiza a luz e o helper (e o sol)
+ */
+function updateLight() {
+
+    // Atualiza a posição do sol e do seu brilho
+    sun.position.copy(light.position);
+    sunGlow.position.copy(light.position);
+
+    // Atualiza a posição de luz e do seu helper
+    light.target.updateMatrixWorld();
+    lightHelper.update();
+
+}
+
+/**
+ * Atualiza a posição da pokeball conforme a Curva de Bézier
+ */
+function posicaoPokeball() {
+
+    pokeball = scene.getObjectByName('pokeball');
+    if (t <= 1) {
+        // Atualiza a posição e incrementa o parâmetro
+        pokeball.position.copy(curva.getPointAt(t));
+        t += 0.001;
+    }
+    else
+        // Volta à posição inicial
+        t = 0;
+
+}
+
+/**
  * Retorna uma posição (número) aleatória
  * @returns int
  */
@@ -653,19 +722,4 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
     folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
     folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
     folder.open();
-}
-
-/**
- * Atualiza a luz e o helper (e o sol)
- */
-function updateLight() {
-
-    // Atualiza a posição do sol e do seu brilho
-    sun.position.copy(light.position);
-    sunGlow.position.copy(light.position);
-
-    // Atualiza a posição de luz e do seu helper
-    light.target.updateMatrixWorld();
-    lightHelper.update();
-
 }
