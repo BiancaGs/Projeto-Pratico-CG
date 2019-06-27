@@ -569,7 +569,7 @@ function render() {
         $('.overlay').hide();
 
         // Atualiza a posição da pokeball conforme a curva definida
-        posicaoPokeball();
+        // posicaoPokeball();
 
         // Aplica a animação na Pokeball
         var delta = clock.getDelta();
@@ -605,41 +605,42 @@ function onWindowResize() {
 /**
  * Trata dos eventos de clique no teclado
  */
-function Teclado() {
+function Teclado(e) {
 
     var incremento = 0.1;
     var novaPosicao;
 
     // Teclas: W A S D
+    var tecla = String.fromCharCode(e.which);
 
-    switch (event.keyCode) {
-        case 65:    // A : esquerda
+    switch (tecla) {
+        case 'A':    // A : esquerda
             pokeball3D.position.x += incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 87:    // W : frente
+        case 'W':    // W : frente
             novaPosicao = pokeball3D.position.z + incremento;
             pokeball3D.position.z = novaPosicao;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 68:    // D : direita
+        case 'D':    // D : direita
             pokeball3D.position.x -= incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 83:    // S : trás
+        case 'S':    // S : trás
             novaPosicao = pokeball3D.position.z - incremento;
             pokeball3D.position.z = novaPosicao;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
-        case 79:
+        case 'O':
             console.log('play');
             action.play();
             break;
