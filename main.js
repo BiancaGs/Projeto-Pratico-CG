@@ -34,7 +34,7 @@ var bulbasaur3D = new THREE.Object3D;
 var groudon3D = new THREE.Object3D;
 var magnemite3D = new THREE.Object3D;
 var pokeball3D = new THREE.Object3D;
-var sun;
+var sun3D;
 var sunGlow;
 
 // Para uso do loader
@@ -95,12 +95,11 @@ function init() {
 
     renderer.shadowMap.enabled = true;
     renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-    // renderer.shadowMapSoft = true;
 
     renderer.physicallyCorrectLights = true;
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
-    // renderer.toneMapping = ReinhardToneMapping;
+    renderer.toneMapping = THREE.ReinhardToneMapping;
 
     container.appendChild(renderer.domElement);
 
@@ -151,7 +150,7 @@ function init() {
 
     // Luz Direcional do Sol
     light = new THREE.DirectionalLight(0xffffff, 4);
-    light.position.set(20, 20, 20);
+    light.position.set(101, 0, 0);
     light.castShadow = true;
     light.shadow.camera = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000);
     light.shadow.mapSize.width = 2048;
@@ -238,9 +237,10 @@ function init() {
     // Sol
     var solGeometry = new THREE.SphereGeometry( 1, 32, 32 );
     var materialSphere = new THREE.MeshBasicMaterial( {color: 0xFFCC33} );
-    sun = new THREE.Mesh( solGeometry, materialSphere );
-    sun.position.set(20, 20, 20);
-    scene.add( sun );
+    sun3D = new THREE.Mesh( solGeometry, materialSphere );
+    sun3D.name = 'sol';
+    sun3D.position.copy(light.position);
+    scene.add( sun3D );
 
     var materialSol = new THREE.ShaderMaterial({
         uniforms: {
@@ -257,7 +257,7 @@ function init() {
     });
 
     sunGlow = new THREE.Mesh(solGeometry.clone(), materialSol.clone());
-    sunGlow.position.set(20, 20, 20);
+    sunGlow.position.copy(sun3D.position);
     sunGlow.scale.multiplyScalar(1.2);
     scene.add(sunGlow);
 
@@ -528,10 +528,10 @@ function init() {
     // =======================================================
 
     curva = new THREE.CubicBezierCurve3(
-        new THREE.Vector3( -10, 0, 0 ),
-        new THREE.Vector3( -5, 15, 0 ),
-        new THREE.Vector3( 20, 15, 0 ),
-        new THREE.Vector3( 10, 0, 0 )
+        new THREE.Vector3( -101, 0, 0 ),
+        new THREE.Vector3( -101, 101, 0 ),
+        new THREE.Vector3( 101, 101, 0 ),
+        new THREE.Vector3( 101, 0, 0 )
     );
     
     pontos = curva.getPoints(50);
@@ -583,7 +583,7 @@ function render() {
         $('.overlay').hide();
 
         // Atualiza a posição da pokeball conforme a curva definida
-        posicaoPokeball();
+        posicaoSol(60);
 
         // Aplica a animação na Pokeball
         var delta = clock.getDelta();
@@ -688,7 +688,7 @@ $(document).ready(function() {
 function updateLight() {
 
     // Atualiza a posição do sol e do seu brilho
-    sun.position.copy(light.position);
+    sun3D.position.copy(light.position);
     sunGlow.position.copy(light.position);
 
     // Atualiza a posição de luz e do seu helper
@@ -698,18 +698,30 @@ function updateLight() {
 }
 
 /**
- * Atualiza a posição da pokeball conforme a Curva de Bézier
+ * Atualiza a posição do sol conforme a Curva de Bézier
  */
-function posicaoPokeball() {
+function posicaoSol(tempo) {
 
-    pokeball = scene.getObjectByName('pokeball');
+    // Calcula o incremento de t para que o jogo demore 'tempo' segundos
+    var inc = 1 / (60 * tempo);
+
+    sol = scene.getObjectByName('sol');
     if (t <= 1) {
+
         // Atualiza a posição e incrementa o parâmetro
-        pokeball.position.copy(curva.getPointAt(t));
-        t += 0.001;
+        sol.position.copy(curva.getPointAt(t));
+        light.position.copy(sol.position);
+        sunGlow.position.copy(sol.position);
+        
+        // Atualiza a posição de luz e do seu helper
+        light.target.updateMatrixWorld();
+        lightHelper.update();
+        
+        t += inc;
+
     }
     else
-        // Volta à posição inicial
+        // Chegou ao final. Volta à posição inicial
         t = 0;
 
 }
@@ -733,7 +745,7 @@ function posicaoAleatoria(){
  */
 function criarGUILuz(gui, vector3, name, onChangeFn) {
     const folder = gui.addFolder(name);
-    folder.add(vector3, 'x', -200, 20).onChange(onChangeFn);
+    folder.add(vector3, 'x', -101, 101).onChange(onChangeFn);
     folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
     folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
     folder.open();
