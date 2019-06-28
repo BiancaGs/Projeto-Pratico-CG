@@ -72,6 +72,39 @@ animate();
 // Função init
 function init() {
 
+    // =======================================================
+    // Loader
+    // =======================================================
+    
+    const loadingManager = new THREE.LoadingManager();
+
+    loadingManager.onStart = function ( url, itemsLoaded, itemsTotal ) {
+
+        console.log( 'Started loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    
+    };
+    
+    loadingManager.onLoad = function ( ) {
+    
+        console.log( 'Loading complete!' );
+
+        // Retira o overlay
+        $('.overlay').hide();
+    
+    };
+    
+    loadingManager.onProgress = function ( url, itemsLoaded, itemsTotal ) {
+    
+        console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
+    
+    };
+    
+    loadingManager.onError = function ( url ) {
+    
+        console.log( 'There was an error loading ' + url );
+    
+    };
+
 
     // =======================================================
     // Recuperação do canvas
@@ -182,7 +215,7 @@ function init() {
     // Plano
     // =======================================================
 
-    var texturaPlano = new THREE.TextureLoader().load('img/grass2.jpg');
+    var texturaPlano = new THREE.TextureLoader(loadingManager).load('img/grass2.jpg');
     texturaPlano.wrapS = texturaPlano.wrapT = THREE.RepeatWrapping;
     texturaPlano.repeat.set(4, 4);
     texturaPlano.anisotropy = 16; // filtro anisotrópico
@@ -263,7 +296,7 @@ function init() {
 
 
     // Texturas
-    var loader = new THREE.TextureLoader();
+    var loader = new THREE.TextureLoader(loadingManager);
 
     var materialIvysaur = new THREE.MeshPhongMaterial({
         color: 0xeeeeee,
@@ -277,13 +310,13 @@ function init() {
     
 
     // IVYSAUR
-    var mtlIvysaur = new  THREE.MTLLoader;
+    var mtlIvysaur = new  THREE.MTLLoader(loadingManager);
     mtlIvysaur.setPath('assets/');
     mtlIvysaur.load('ivysaur/Pokemon.mtl', function(materials) {
         
         materials.preload();
         
-        var objIvysaur = new THREE.OBJLoader;
+        var objIvysaur = new THREE.OBJLoader(loadingManager);
         objIvysaur.setMaterials(materials);
         objIvysaur.setPath('assets/');
         objIvysaur.load(
@@ -321,15 +354,6 @@ function init() {
                 ivysaurCarregado = true;
 
                 scene.add(ivysaur3D);
-            },
-
-            // Mostra o progresso
-            function(xhr) {
-                porcIvysaur = xhr.loaded / xhr.total * 100;
-                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-                console.log(porcentagem);
-                
-                console.log( 'Ivysaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
 
@@ -337,13 +361,13 @@ function init() {
 
 
     // BULBASAUR
-    var mtlBulbasaur = new  THREE.MTLLoader;
+    var mtlBulbasaur = new  THREE.MTLLoader(loadingManager);
     mtlBulbasaur.setPath('assets/');
     mtlBulbasaur.load('bulbasaur/Bulbasaur/bulbasaur.mtl', function(materials) {
         
         materials.preload();
         
-        var objBulbasaur = new THREE.OBJLoader;
+        var objBulbasaur = new THREE.OBJLoader(loadingManager);
         objBulbasaur.setMaterials(materials);
         objBulbasaur.setPath('assets/');
         objBulbasaur.load(
@@ -372,15 +396,6 @@ function init() {
                 bulbasaurCarregado = true;
 
                 scene.add(bulbasaur3D);
-            },
-
-            // Mostra o progresso
-            function(xhr) {
-                porcBulba = xhr.loaded / xhr.total * 100;
-                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-                console.log(porcentagem);
-                
-                console.log( 'Bulbasaur ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
 
@@ -388,7 +403,7 @@ function init() {
 
 
     // GROUDON
-    var objGroudon = new THREE.OBJLoader;
+    var objGroudon = new THREE.OBJLoader(loadingManager);
     objGroudon.setPath('assets/');
     objGroudon.load(
         
@@ -423,27 +438,18 @@ function init() {
             groudonCarregado = true;
 
             scene.add(groudon3D);
-        },
-
-        // Mostra o progresso
-        function(xhr) {
-            porcGroudon = xhr.loaded / xhr.total * 100;
-            porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-            console.log(porcentagem);
-            
-            console.log( 'Groudon ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
         }
     );
 
 
     // MAGNEMITE
-    var mtlMagnemite = new  THREE.MTLLoader;
+    var mtlMagnemite = new  THREE.MTLLoader(loadingManager);
     mtlMagnemite.setPath('assets/');
     mtlMagnemite.load('magnemite/Magnemite.mtl', function(materials) {
         
         materials.preload();
         
-        var objMagnemite = new THREE.OBJLoader;
+        var objMagnemite = new THREE.OBJLoader(loadingManager);
         objMagnemite.setMaterials(materials);
         objMagnemite.setPath('assets/');
         objMagnemite.load(
@@ -472,15 +478,6 @@ function init() {
                 magnemiteCarregado = true;
 
                 scene.add(magnemite3D);
-            },
-
-            // Mostra o progresso
-            function(xhr) {
-                porcMagnemite = xhr.loaded / xhr.total * 100;
-                porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-                console.log(porcentagem);
-                
-                console.log( 'Magnemite ' + ( xhr.loaded / xhr.total * 100 ) + '% carregado' );
             }
         );
 
@@ -488,7 +485,7 @@ function init() {
         
 
     // NOVA POKEBALL
-    var fbxPokeball = new THREE.FBXLoader();
+    var fbxPokeball = new THREE.FBXLoader(loadingManager);
     fbxPokeball.setPath('assets/');
     fbxPokeball.load(
 
@@ -518,16 +515,8 @@ function init() {
 
             scene.add(object);
 
-        },
-
-        // Mostra o progresso
-        function(xhr) {
-            porcPokeball = xhr.loaded / xhr.total * 100;
-            porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
-            console.log(porcentagem);
-            
-            console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregada' );
         }
+
     );
     
 
@@ -580,31 +569,22 @@ function animate(){
 
 // Funcão render
 function render() {
-    if (flagCarregado == 0) {
-        if (ivysaurCarregado && bulbasaurCarregado && groudonCarregado && magnemiteCarregado && pokeballCarregado) {
-            flagCarregado = 1;
-        }
+
+    // Atualiza a posição da pokeball conforme a curva definida
+    posicaoSol(60);
+
+    // Aplica a animação na Pokeball
+    var delta = clock.getDelta();
+    if (mixer) mixer.update(delta);
+
+    if (cameraAtiva == 0) {
+        cameraPerspectiva.lookAt(scene.position);
+        renderer.render(scene, cameraPerspectiva);
     }
     else {
-
-        // Retira o overlay
-        $('.overlay').hide();
-
-        // Atualiza a posição da pokeball conforme a curva definida
-        posicaoSol(60);
-
-        // Aplica a animação na Pokeball
-        var delta = clock.getDelta();
-        if (mixer) mixer.update(delta);
-
-        if (cameraAtiva == 0) {
-            cameraPerspectiva.lookAt(scene.position);
-            renderer.render(scene, cameraPerspectiva);
-        }
-        else {
-            renderer.render(scene, cameraPokeball);
-        }
+        renderer.render(scene, cameraPokeball);
     }
+
 }
 
 
