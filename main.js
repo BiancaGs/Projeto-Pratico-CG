@@ -29,25 +29,14 @@ var light, lightHelper, shadowHelper;
 var canvas = document.getElementById('modelo');
 
 // Objetos
-var ivysaur3D = new THREE.Object3D;
+var ivysaur3D   = new THREE.Object3D;
 var bulbasaur3D = new THREE.Object3D;
-var groudon3D = new THREE.Object3D;
+var groudon3D   = new THREE.Object3D;
+var geodude3D   = new THREE.Object3D;
 var magnemite3D = new THREE.Object3D;
-var pokeball3D = new THREE.Object3D;
+var pokeball3D  = new THREE.Object3D;
 var sun3D;
 var sunGlow;
-
-// Para uso do loader
-var ivysaurCarregado = false;
-var bulbasaurCarregado = false;
-var groudonCarregado = false;
-var magnemiteCarregado = false;
-var pokeballCarregado = false;
-var flagCarregado = 0;
-
-var porcIvysaur = 0, porcBulba = 0, porcGroudon = 0, porcMagnemite = 0, porcPokeball = 0;
-var porcentagem = 0;    // Média das porcentagens
-
 
 // Animação
 var clock = new THREE.Clock();
@@ -307,57 +296,50 @@ function init() {
         normalMap: loader.load("assets/ivysaur/textures/Final_Pokemon_Normal.jpg"),
         alphaMap: loader.load("assets/ivysaur/textures/Final_Pokemon_Glossiness.jpg")
     });
+
+    var materialGeodude = new THREE.MeshPhongMaterial({
+        color: 0xeeeeee,
+        specular: 0x333333,
+        shininess: 15,
+        map: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Diffuse.png"),
+        specularMap: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Specular.png"),
+        normalMap: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Normal.png"),
+        alphaMap: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Glossiness.png")
+    });
     
 
     // IVYSAUR
-    var mtlIvysaur = new  THREE.MTLLoader(loadingManager);
-    mtlIvysaur.setPath('assets/');
-    mtlIvysaur.load('ivysaur/Pokemon.mtl', function(materials) {
+    var objIvysaur = new THREE.OBJLoader(loadingManager);
+    objIvysaur.setPath('assets/');
+    objIvysaur.load(
         
-        materials.preload();
+        // URL
+        'ivysaur/ivysaur.obj', 
         
-        var objIvysaur = new THREE.OBJLoader(loadingManager);
-        objIvysaur.setMaterials(materials);
-        objIvysaur.setPath('assets/');
-        objIvysaur.load(
+        // Chamado quando o objeto foi carregado
+        function(object) {
             
-            // URL
-            'ivysaur/Pokemon.obj', 
+            // Adiciona a textura
+            object.traverse(function (node) {
+                if ( node.isMesh ) node.material = materialIvysaur;
+            });
+
+            // Sombra
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+                }
+            });
             
-            // Chamado quando o objeto foi carregado
-            function(object) {
-                
-                // Adiciona a textura
-                object.traverse(function (node) {
-                    if ( node.isMesh ) node.material = materialIvysaur;
-                });
+            object.scale.set(0.99, 0.99, 0.99);          // Escala
+            object.position.set(posicaoAleatoria(), 0, posicaoAleatoria());                // Posição
 
-                // Sombra
-                object.traverse(function (child) {
-                    if (child instanceof THREE.Mesh) {
-                        child.receiveShadow = true;
-                        child.castShadow = true;
-                    }
-                });
+            ivysaur3D = object;
 
-                // // Adiciona o shader
-                // object.traverse(function(child) {
-                //     if (child instanceof THREE.Mesh) {
-                //         child.material = material;
-                //     }
-                // });
-                
-                object.scale.set(0.99, 0.99, 0.99);          // Escala
-                object.position.set(posicaoAleatoria(), 0, posicaoAleatoria());                // Posição
-
-                ivysaur3D = object;
-                ivysaurCarregado = true;
-
-                scene.add(ivysaur3D);
-            }
-        );
-
-    });
+            scene.add(ivysaur3D);
+        }
+    );
 
 
     // BULBASAUR
@@ -393,7 +375,6 @@ function init() {
                 object.rotateY(135);                           // Rotação
 
                 bulbasaur3D = object;
-                bulbasaurCarregado = true;
 
                 scene.add(bulbasaur3D);
             }
@@ -435,9 +416,42 @@ function init() {
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             groudon3D = object;
-            groudonCarregado = true;
 
             scene.add(groudon3D);
+        }
+    );
+
+    
+    // GEODUDE
+    var obj = new THREE.OBJLoader(loadingManager);
+    obj.setPath('assets/');
+    obj.load(
+        
+        // URL
+        'geodude/geodude.obj', 
+        
+        // Chamado quando o objeto foi carregado
+        function(object) {
+
+            // Adiciona a textura
+            object.traverse(function (node) {
+                if ( node.isMesh ) node.material = materialGeodude;
+            });
+
+            // Sombra
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+                }
+            });
+
+            object.scale.set(0.01, 0.01, 0.01);                                     // Escala
+            object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());      // Posição
+
+            geodude3D = object;
+
+            scene.add(object);
         }
     );
 
@@ -475,7 +489,6 @@ function init() {
                 object.rotateY(135);                           // Rotação
 
                 magnemite3D = object;
-                magnemiteCarregado = true;
 
                 scene.add(magnemite3D);
             }
@@ -511,7 +524,6 @@ function init() {
 
             pokeball3D = object;
             pokeball3D.name = 'pokeball';                   // Nome para futura referência
-            pokeballCarregado = true;
 
             scene.add(object);
 
