@@ -363,7 +363,7 @@ function init() {
     // BULBASAUR
     var mtlBulbasaur = new  THREE.MTLLoader(loadingManager);
     mtlBulbasaur.setPath('assets/');
-    mtlBulbasaur.load('bulbasaur/Bulbasaur/bulbasaur.mtl', function(materials) {
+    mtlBulbasaur.load('bulbasaur/bulbasaur.mtl', function(materials) {
         
         materials.preload();
         
@@ -373,7 +373,7 @@ function init() {
         objBulbasaur.load(
             
             // URL
-            'bulbasaur/Bulbasaur/bulbasaur.obj', 
+            'bulbasaur/bulbasaur.obj', 
             
             // Chamado quando o objeto foi carregado
             function(object) {
