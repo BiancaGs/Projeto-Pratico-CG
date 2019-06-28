@@ -518,8 +518,16 @@ function init() {
 
             scene.add(object);
 
-        }
+        },
 
+        // Mostra o progresso
+        function(xhr) {
+            porcPokeball = xhr.loaded / xhr.total * 100;
+            porcentagem = (porcIvysaur + porcBulba + porcGroudon + porcMagnemite + porcPokeball) / 5;
+            console.log(porcentagem);
+            
+            console.log( 'Pokeball ' + ( xhr.loaded / xhr.total * 100 ) + '% carregada' );
+        }
     );
     
 
