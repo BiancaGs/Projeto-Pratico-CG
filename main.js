@@ -333,13 +333,14 @@ function init() {
             });
             
             object.scale.set(0.99, 0.99, 0.99);          // Escala
-            object.position.set(posicaoAleatoria(), 0, posicaoAleatoria());                // Posição
+            object.position.copy(overlap());                // Posição
 
             ivysaur3D = object;
 
             scene.add(ivysaur3D);
         }
     );
+
 
 
     // BULBASAUR
@@ -371,7 +372,7 @@ function init() {
                 });
 
                 object.scale.set(0.025, 0.025, 0.025);         // Escala
-                object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
+                object.position.copy(overlap());                // Posição
                 object.rotateY(135);                           // Rotação
 
                 bulbasaur3D = object;
@@ -412,7 +413,7 @@ function init() {
             });
 
             object.scale.set(0.1, 0.1, 0.1);            // Escala
-            object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());           // Posição
+            object.position.copy(overlap());                // Posição
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             groudon3D = object;
@@ -447,7 +448,7 @@ function init() {
             });
 
             object.scale.set(0.01, 0.01, 0.01);                                     // Escala
-            object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());      // Posição
+            object.position.copy(overlap());                // Posição
 
             geodude3D = object;
 
@@ -485,7 +486,7 @@ function init() {
                 });
 
                 object.scale.set(0.003, 0.003, 0.003);         // Escala
-                object.position.set(posicaoAleatoria(), 0.01, posicaoAleatoria());               // Posição
+                object.position.copy(overlap());                // Posição
                 object.rotateY(135);                           // Rotação
 
                 magnemite3D = object;
@@ -726,15 +727,7 @@ function posicaoSol(tempo) {
 
 }
 
-/**
- * Retorna uma posição (número) aleatória
- * @returns int
- */
-function posicaoAleatoria(){
-    var pos = Math.floor(Math.random() * 9);
-    pos *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
-    return pos;
-}
+
 
 /**
  * Cria os controles na GUI tanto para a posição da luz, quanto do alvo da luz
@@ -749,4 +742,49 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
     folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
     folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
     folder.open();
+}
+
+
+var posicoes = [];
+
+/**
+ * Retorna uma posição (Vector3) aleatória
+ * @returns Vector3
+ */
+function posicaoAleatoria(){
+    
+    var x = Math.floor(Math.random() * 9);
+    x *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+    
+    var z = Math.floor(Math.random() * 9);
+    z *= Math.floor(Math.random() * 2) == 1 ? 1 : -1;
+
+    var posicao = new THREE.Vector3(x, 0, z);
+    return posicao;    
+    
+}
+
+function overlap() {
+    
+    var novaPosicao = posicaoAleatoria();
+    
+    while (pertence(novaPosicao))
+        novaPosicao = posicaoAleatoria();
+
+    posicoes.push(novaPosicao);
+    
+    return novaPosicao;
+    
+}
+
+function pertence(pos) {
+
+    for (let i = 0; i < posicoes.length; i++) {
+        const posicao = posicoes[i];
+        if (posicao.x == pos.x && posicao.z == pos.z)
+            return true;
+    }
+
+    return false;
+
 }
