@@ -209,9 +209,11 @@ function init() {
     texturaPlano.repeat.set(4, 4);
     texturaPlano.anisotropy = 16; // filtro anisotrópico
 
-    var materialPlano = new THREE.MeshPhongMaterial({
+    var materialPlano = new THREE.MeshStandardMaterial({
         map: texturaPlano,
-        side: THREE.DoubleSide
+        side: THREE.DoubleSide,
+        roughness: 1,
+        metalness: 1
     });
 
     var geo = new THREE.PlaneBufferGeometry(20, 20, 8, 8);
