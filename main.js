@@ -632,27 +632,29 @@ function Teclado(e) {
 
     switch (tecla) {
         case 'A':    // A : esquerda
-            pokeball3D.position.x += incremento;
+            if(pokeball3D.position.x + incremento < 9.8)
+                pokeball3D.position.x += incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 'W':    // W : frente
-            novaPosicao = pokeball3D.position.z + incremento;
-            pokeball3D.position.z = novaPosicao;
+            if(pokeball3D.position.z + incremento < 9.8)
+                pokeball3D.position.z += incremento;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 'D':    // D : direita
-            pokeball3D.position.x -= incremento;
+            if(pokeball3D.position.x - incremento > -9.8)
+                pokeball3D.position.x -= incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
 
         case 'S':    // S : trás
-            novaPosicao = pokeball3D.position.z - incremento;
-            pokeball3D.position.z = novaPosicao;
+            if(pokeball3D.position.z - incremento > -9.8)
+                pokeball3D.position.z -= incremento;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
             break;
