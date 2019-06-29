@@ -196,7 +196,7 @@ function init() {
 
     var gui = new dat.GUI();
     gui.add(light, 'intensity', 0, 10, 0.01);                           // Controle da intensidade
-    criarGUILuz(gui, light.position, 'position', updateLight);          // Para a luz
+    // criarGUILuz(gui, light.position, 'position', updateLight);          // Para a luz
     // criarGUILuz(gui, light.target.position, 'target', updateLight);  // Para o alvo da luz
 
     
@@ -742,9 +742,9 @@ function posicaoSol(tempo) {
  */
 function criarGUILuz(gui, vector3, name, onChangeFn) {
     const folder = gui.addFolder(name);
-    folder.add(vector3, 'x', -101, 101).onChange(onChangeFn);
-    folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
-    folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
+    // folder.add(vector3, 'x', -101, 101).onChange(onChangeFn);
+    // folder.add(vector3, 'y', 3, 20).onChange(onChangeFn);
+    // folder.add(vector3, 'z', -20, 20).onChange(onChangeFn);
     folder.open();
 }
 
