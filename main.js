@@ -38,6 +38,8 @@ var pokeball3D  = new THREE.Object3D;
 var sun3D;
 var sunGlow;
 
+var boxes = [];
+
 // Animação
 var clock = new THREE.Clock();
 var mixer;
@@ -335,10 +337,23 @@ function init() {
             });
             
             object.scale.set(0.99, 0.99, 0.99);          // Escala
-            object.position.copy(overlap());                // Posição
+            object.position.copy(posicaoAleatoria());    // Posição
+
+            
+            var box = new THREE.Box3().setFromObject(object);
+            
+            while (colide(box) == true) {
+                object.position.copy(posicaoAleatoria());
+                box = new THREE.Box3().setFromObject(object);
+            }
+            
+            boxes.push(box);
+            
+            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+            scene.add( helper );
+            
 
             ivysaur3D = object;
-
             scene.add(ivysaur3D);
         }
     );
@@ -377,6 +392,20 @@ function init() {
                 object.position.copy(overlap());                // Posição
                 object.rotateY(135);                           // Rotação
 
+
+                var box = new THREE.Box3().setFromObject(object);
+
+                while (colide(box) == true) {
+                    object.position.copy(posicaoAleatoria());
+                    box = new THREE.Box3().setFromObject(object);
+                }
+                
+                boxes.push(box);
+
+                var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+                scene.add( helper );
+
+                
                 bulbasaur3D = object;
 
                 scene.add(bulbasaur3D);
@@ -418,6 +447,20 @@ function init() {
             object.position.copy(overlap());                // Posição
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
+            
+            var box = new THREE.Box3().setFromObject(object);
+            
+            while (colide(box) == true) {
+                object.position.copy(posicaoAleatoria());
+                box = new THREE.Box3().setFromObject(object);
+            }
+            
+            boxes.push(box);
+            
+            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+            scene.add( helper );
+            
+            
             groudon3D = object;
 
             scene.add(groudon3D);
@@ -451,6 +494,19 @@ function init() {
 
             object.scale.set(0.01, 0.01, 0.01);                                     // Escala
             object.position.copy(overlap());                // Posição
+
+            var box = new THREE.Box3().setFromObject(object);
+
+            while (colide(box) == true) {
+                object.position.copy(posicaoAleatoria());
+                box = new THREE.Box3().setFromObject(object);
+            }
+            
+            boxes.push(box);
+
+            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+            scene.add( helper );
+
 
             geodude3D = object;
 
@@ -490,6 +546,18 @@ function init() {
                 object.scale.set(0.003, 0.003, 0.003);         // Escala
                 object.position.copy(overlap());                // Posição
                 object.rotateY(135);                           // Rotação
+
+                var box = new THREE.Box3().setFromObject(object);
+
+                while (colide(box) == true) {
+                    object.position.copy(posicaoAleatoria());
+                    box = new THREE.Box3().setFromObject(object);
+                }
+                
+                boxes.push(box);
+
+                var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+                scene.add( helper );
 
                 magnemite3D = object;
 
@@ -789,6 +857,23 @@ function pertence(pos) {
             return true;
     }
 
+    return false;
+
+}
+
+
+// -------------------------------------------------------
+// =======================================================
+// COLLISION ENGINE
+// =======================================================
+// -------------------------------------------------------
+
+function colide(box) {
+
+    for (let i = 0; i < boxes.length; i++){
+        if (box.intersectsBox(boxes[i])) 
+            return true;       
+    }
     return false;
 
 }
