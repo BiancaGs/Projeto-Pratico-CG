@@ -310,6 +310,48 @@ function init() {
         normalMap: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Normal.png"),
         alphaMap: loader.load("assets/geodude/textures/Geodude_4_Pokemon_Glossiness.png")
     });
+
+
+    // NOVA POKEBALL
+    var fbxPokeball = new THREE.FBXLoader(loadingManager);
+    fbxPokeball.setPath('assets/');
+    fbxPokeball.load(
+
+        // URL
+        'pokeball/Pokeball2.fbx',
+
+        function (object) {
+
+            mixer = new THREE.AnimationMixer(object);
+
+            action = mixer.clipAction(object.animations[0]);
+            action.play();
+
+            // Sombra
+            object.traverse(function (child) {
+                if (child instanceof THREE.Mesh) {
+                    child.receiveShadow = true;
+                    child.castShadow = true;
+                }
+            });
+
+            object.scale.set(0.0015, 0.0015, 0.0015);       // Escala
+
+            var box = new THREE.Box3().setFromObject(object);
+
+            boxes.push(box);
+            
+
+            pokeball3D = object;
+            pokeball3D.name = 'pokeball';                   // Nome para futura referência
+
+            scene.add(object);
+            
+            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+            scene.add( helper );
+        }
+
+    );
     
 
     // IVYSAUR
@@ -389,7 +431,7 @@ function init() {
                 });
 
                 object.scale.set(0.025, 0.025, 0.025);         // Escala
-                object.position.copy(overlap());                // Posição
+                object.position.copy(posicaoAleatoria());                // Posição
                 object.rotateY(135);                           // Rotação
 
 
@@ -405,7 +447,7 @@ function init() {
                 var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
                 scene.add( helper );
 
-                
+
                 bulbasaur3D = object;
 
                 scene.add(bulbasaur3D);
@@ -444,7 +486,7 @@ function init() {
             });
 
             object.scale.set(0.1, 0.1, 0.1);            // Escala
-            object.position.copy(overlap());                // Posição
+            object.position.copy(posicaoAleatoria());                // Posição
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             
@@ -493,7 +535,7 @@ function init() {
             });
 
             object.scale.set(0.01, 0.01, 0.01);                                     // Escala
-            object.position.copy(overlap());                // Posição
+            object.position.copy(posicaoAleatoria());                // Posição
 
             var box = new THREE.Box3().setFromObject(object);
 
@@ -544,7 +586,7 @@ function init() {
                 });
 
                 object.scale.set(0.003, 0.003, 0.003);         // Escala
-                object.position.copy(overlap());                // Posição
+                object.position.copy(posicaoAleatoria());                // Posição
                 object.rotateY(135);                           // Rotação
 
                 var box = new THREE.Box3().setFromObject(object);
@@ -566,42 +608,7 @@ function init() {
         );
 
     });
-        
-
-    // NOVA POKEBALL
-    var fbxPokeball = new THREE.FBXLoader(loadingManager);
-    fbxPokeball.setPath('assets/');
-    fbxPokeball.load(
-
-        // URL
-        'pokeball/Pokeball2.fbx',
-
-        function (object) {
-
-            mixer = new THREE.AnimationMixer(object);
-
-            action = mixer.clipAction(object.animations[0]);
-            action.play();
-
-            // Sombra
-            object.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.receiveShadow = true;
-                    child.castShadow = true;
-                }
-            });
-
-            object.scale.set(0.0015, 0.0015, 0.0015);       // Escala
-
-            pokeball3D = object;
-            pokeball3D.name = 'pokeball';                   // Nome para futura referência
-
-            scene.add(object);
-
-        }
-
-    );
-    
+           
 
     // =======================================================
     // Curva de Bézier para a Pokebola
@@ -817,7 +824,12 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
 }
 
 
-var posicoes = [];
+
+// -------------------------------------------------------
+// =======================================================
+// COLLISION ENGINE
+// =======================================================
+// -------------------------------------------------------
 
 /**
  * Retorna uma posição (Vector3) aleatória
@@ -836,38 +848,11 @@ function posicaoAleatoria(){
     
 }
 
-function overlap() {
-    
-    var novaPosicao = posicaoAleatoria();
-    
-    while (pertence(novaPosicao))
-        novaPosicao = posicaoAleatoria();
-
-    posicoes.push(novaPosicao);
-    
-    return novaPosicao;
-    
-}
-
-function pertence(pos) {
-
-    for (let i = 0; i < posicoes.length; i++) {
-        const posicao = posicoes[i];
-        if (posicao.x == pos.x && posicao.z == pos.z)
-            return true;
-    }
-
-    return false;
-
-}
-
-
-// -------------------------------------------------------
-// =======================================================
-// COLLISION ENGINE
-// =======================================================
-// -------------------------------------------------------
-
+/**
+ * Verifica se há ou não colisão entre os objetos
+ * @param {Box3} box 
+ * 
+ */
 function colide(box) {
 
     for (let i = 0; i < boxes.length; i++){
