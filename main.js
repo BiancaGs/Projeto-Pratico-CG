@@ -38,7 +38,12 @@ var pokeball3D  = new THREE.Object3D;
 var sun3D;
 var sunGlow;
 
+// Detecção de Colisão
 var boxes = [];
+var boxPokeball;
+
+// Lógica do Jogo
+var pontuacao = 0;
 
 // Animação
 var clock = new THREE.Clock();
@@ -700,7 +705,6 @@ function onWindowResize() {
 function Teclado(e) {
 
     var incremento = 0.1;
-    var novaPosicao;
 
     // Teclas: W A S D
     var tecla = String.fromCharCode(e.which);
@@ -711,6 +715,13 @@ function Teclado(e) {
                 pokeball3D.position.x += incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
+
+            // Verifica colisão com outro Pokémon
+            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+            if (catchPokemon(boxPokeball) == true)
+                pontuacao += 10;
+            console.log("Pontuação: " + pontuacao);
+            
             break;
 
         case 'W':    // W : frente
@@ -718,6 +729,13 @@ function Teclado(e) {
                 pokeball3D.position.z += incremento;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
+
+            // Verifica colisão com outro Pokémon
+            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+            if (catchPokemon(boxPokeball) == true)
+                pontuacao += 10;
+            console.log("Pontuação: " + pontuacao);
+            
             break;
 
         case 'D':    // D : direita
@@ -725,6 +743,13 @@ function Teclado(e) {
                 pokeball3D.position.x -= incremento;
             cameraPokeball.position.x = pokeball3D.position.x;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
+
+            // Verifica colisão com outro Pokémon
+            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+            if (catchPokemon(boxPokeball) == true)
+                pontuacao += 10;
+            console.log("Pontuação: " + pontuacao);
+            
             break;
 
         case 'S':    // S : trás
@@ -732,11 +757,13 @@ function Teclado(e) {
                 pokeball3D.position.z -= incremento;
             cameraPokeball.position.z = pokeball3D.position.z-2;
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
-            break;
 
-        case 'O':
-            console.log('play');
-            action.play();
+            // Verifica colisão com outro Pokémon
+            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+            if (catchPokemon(boxPokeball) == true)
+                pontuacao += 10;
+            console.log("Pontuação: " + pontuacao);
+            
             break;
     
         default:
@@ -861,4 +888,17 @@ function colide(box) {
     }
     return false;
 
+}
+
+/**
+ * TODO
+ * @param {Box3} box 
+ */
+function catchPokemon(box) {
+
+    for (let i = 1; i < boxes.length; i++){
+        if (box.intersectsBox(boxes[i])) 
+            return true;       
+    }
+    return false;
 }
