@@ -138,7 +138,7 @@ function init() {
     // =======================================================
     
     scene = new THREE.Scene();
-    // scene.background = new THREE.Color('black');
+    scene.background = new THREE.Color(0xEEF3F7);
 
 
     // =======================================================
@@ -174,11 +174,8 @@ function init() {
     scene.add(hemiLight);
     
 
-    // ambient = new THREE.AmbientLight('white', 1.25);
-    // scene.add(ambient);
-
     // Luz Direcional do Sol
-    light = new THREE.DirectionalLight(0xffffff, 4);
+    light = new THREE.DirectionalLight(0xffffff, 5);
     light.position.set(101, 0, 0);
     light.castShadow = true;
     light.shadow.camera = new THREE.PerspectiveCamera(45, ASPECT_RATIO, 0.01, 1000);
