@@ -86,3 +86,14 @@ button:focus {
         transform: rotate(360deg);
     }
 }
+
+/* =======================================================
+   JOGO
+   ======================================================= */
+
+.pontuacao {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    font-size: 80px;
+}

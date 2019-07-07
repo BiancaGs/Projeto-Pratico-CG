@@ -201,8 +201,8 @@ function init() {
     // GUI
     // =======================================================
 
-    var gui = new dat.GUI();
-    gui.add(light, 'intensity', 0, 10, 0.01);                           // Controle da intensidade
+    // var gui = new dat.GUI();
+    // gui.add(light, 'intensity', 0, 10, 0.01);                           // Controle da intensidade
     // criarGUILuz(gui, light.position, 'position', updateLight);          // Para a luz
     // criarGUILuz(gui, light.target.position, 'target', updateLight);  // Para o alvo da luz
 
@@ -344,7 +344,12 @@ function init() {
 
             var box = new THREE.Box3().setFromObject(object);
 
-            boxes.push(box);
+            let noBox = {
+                nomeObjeto: "pokeball",
+                box: box
+            }
+            
+            boxes.push(noBox);
             
 
             pokeball3D = object;
@@ -388,19 +393,25 @@ function init() {
 
             
             var box = new THREE.Box3().setFromObject(object);
-            
+
             while (colide(box) == true) {
                 object.position.copy(posicaoAleatoria());
                 box = new THREE.Box3().setFromObject(object);
             }
+
+            let noBox = {
+                nomeObjeto: "ivysaur",
+                box: box
+            }
             
-            boxes.push(box);
+            boxes.push(noBox);
             
             var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
             scene.add( helper );
             
 
             ivysaur3D = object;
+            ivysaur3D.name = "ivysaur";
             scene.add(ivysaur3D);
         }
     );
@@ -447,14 +458,19 @@ function init() {
                     box = new THREE.Box3().setFromObject(object);
                 }
                 
-                boxes.push(box);
+                let noBox = {
+                    nomeObjeto: "bulbasaur",
+                    box: box
+                }
+                
+                boxes.push(noBox);
 
                 var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
                 scene.add( helper );
 
 
                 bulbasaur3D = object;
-
+                bulbasaur3D.name = "bulbasaur";
                 scene.add(bulbasaur3D);
             }
         );
@@ -502,14 +518,19 @@ function init() {
                 box = new THREE.Box3().setFromObject(object);
             }
             
-            boxes.push(box);
+            let noBox = {
+                nomeObjeto: "groudon",
+                box: box
+            }
+            
+            boxes.push(noBox);
             
             var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
             scene.add( helper );
             
             
             groudon3D = object;
-
+            groudon3D.name = "groudon";
             scene.add(groudon3D);
         }
     );
@@ -549,14 +570,19 @@ function init() {
                 box = new THREE.Box3().setFromObject(object);
             }
             
-            boxes.push(box);
+            let noBox = {
+                nomeObjeto: "geodude",
+                box: box
+            }
+            
+            boxes.push(noBox);
 
             var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
             scene.add( helper );
 
 
             geodude3D = object;
-
+            geodude3D.name = "geodude";
             scene.add(object);
         }
     );
@@ -601,13 +627,18 @@ function init() {
                     box = new THREE.Box3().setFromObject(object);
                 }
                 
-                boxes.push(box);
+                let noBox = {
+                    nomeObjeto: "magnemite",
+                    box: box
+                }
+                
+                boxes.push(noBox);
 
                 var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
                 scene.add( helper );
 
                 magnemite3D = object;
-
+                magnemite3D.name = "magnemite";
                 scene.add(magnemite3D);
             }
         );
@@ -720,6 +751,7 @@ function Teclado(e) {
             boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
             if (catchPokemon(boxPokeball) == true)
                 pontuacao += 10;
+            $('.pontuacao').text(pontuacao);
             console.log("Pontuação: " + pontuacao);
             
             break;
@@ -734,6 +766,7 @@ function Teclado(e) {
             boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
             if (catchPokemon(boxPokeball) == true)
                 pontuacao += 10;
+            $('.pontuacao').text(pontuacao);
             console.log("Pontuação: " + pontuacao);
             
             break;
@@ -748,6 +781,7 @@ function Teclado(e) {
             boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
             if (catchPokemon(boxPokeball) == true)
                 pontuacao += 10;
+            $('.pontuacao').text(pontuacao);
             console.log("Pontuação: " + pontuacao);
             
             break;
@@ -762,6 +796,7 @@ function Teclado(e) {
             boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
             if (catchPokemon(boxPokeball) == true)
                 pontuacao += 10;
+            $('.pontuacao').text(pontuacao);
             console.log("Pontuação: " + pontuacao);
             
             break;
@@ -883,7 +918,7 @@ function posicaoAleatoria(){
 function colide(box) {
 
     for (let i = 0; i < boxes.length; i++){
-        if (box.intersectsBox(boxes[i])) 
+        if (box.intersectsBox(boxes[i].box)) 
             return true;       
     }
     return false;
@@ -892,13 +927,19 @@ function colide(box) {
 
 /**
  * TODO
- * @param {Box3} box 
+ * @param {Box3} boxPokeball 
  */
-function catchPokemon(box) {
+function catchPokemon(boxPokeball) {
 
     for (let i = 1; i < boxes.length; i++){
-        if (box.intersectsBox(boxes[i])) 
+        if (boxPokeball.intersectsBox(boxes[i].box)) {
+            // Recupera o objeto que a Pokeball colidiu e remove da cena, junto com a sua Bounding Box
+            var objeto = scene.getObjectByName(boxes[i].nomeObjeto);
+            scene.remove(objeto);
+            boxes[i].box.makeEmpty();
             return true;       
+        }
     }
     return false;
+    
 }
