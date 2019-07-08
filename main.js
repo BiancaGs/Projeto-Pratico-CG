@@ -809,28 +809,16 @@ function Teclado(e) {
             console.log("Pontuação: " + pontuacao);
             
             break;
+
+        case 'C':
+            cameraAtiva = !cameraAtiva;
+            break;
     
         default:
             break;
     }
 
 }
-
-$(document).ready(function() {
-
-    $('#perspectiva').click(function() {
-
-        cameraAtiva = 0;
-               
-    });
-    
-    $('#ortografica').click(function() {
-        
-        cameraAtiva = 1;
-
-    });
-
-});
 
 
 /**
@@ -965,13 +953,33 @@ function showMenu() {
     $('.container-menu').show();
 }
 
+function showTutorial() {
+    $('button#play').hide();
+    $('.overlay-menu').hide();
+    $('.overlay-tutorial').show();
+    $('button#start').show();
+}
+
 function startGame() {
-    $('.overlay').hide();
+    $('.overlay-tutorial').hide();
     $('.container-menu').hide();
+    $('button#start').hide();
     animate();
 }
 
 $(document).on('click', 'button#play', function() {
+
+    var clickSound = new Audio('audio/click.mp3');
+    clickSound.play();
+
+    showTutorial();
+
+});
+
+$(document).on('click', 'button#start', function() {
+
+    var clickSound = new Audio('audio/click.mp3');
+    clickSound.play();
 
     startGame();
 
