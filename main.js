@@ -957,6 +957,7 @@ var audioListener;
 var sound;
 var audioLoader;
 var context;
+var volume = 1;
 
 
 audioListener = new THREE.AudioListener();
@@ -968,7 +969,7 @@ audioLoader = new THREE.AudioLoader();
 audioLoader.load( 'audio/opening.wav', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop( true );
-	sound.setVolume( 1 );
+	sound.setVolume( volume );
 	sound.play();
 });
 
@@ -985,10 +986,14 @@ $(document).ready(function() {
         e.preventDefault();
     
         $(this).toggleClass('mute');
-        if ($(this).hasClass('mute'))
-            sound.setVolume( 0 );
-        else
-            sound.setVolume( 1 );
+        if ($(this).hasClass('mute')) {
+            volume = 0;
+            sound.setVolume( volume );
+        }
+        else {
+            volume = 1;
+            sound.setVolume( volume );
+        }
     
     });
 
@@ -1018,7 +1023,7 @@ function showTutorial() {
     audioLoader.load( 'audio/tutorial.wav', function( buffer ) {
         sound.setBuffer( buffer );
         sound.setLoop( true );
-        sound.setVolume( 1 );
+        sound.setVolume( volume );
         sound.play();
     });
 
@@ -1034,7 +1039,7 @@ function startGame() {
     audioLoader.load( 'audio/battle.wav', function( buffer ) {
         sound.setBuffer( buffer );
         sound.setLoop( true );
-        sound.setVolume( 1 );
+        sound.setVolume( volume );
         sound.play();
     });
 
