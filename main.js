@@ -400,24 +400,10 @@ function init() {
             object.scale.set(0.99, 0.99, 0.99);          // Escala
             object.position.copy(posicaoAleatoria());    // Posição
 
-            
-            var box = new THREE.Box3().setFromObject(object);
 
-            while (colide(box) == true) {
-                object.position.copy(posicaoAleatoria());
-                box = new THREE.Box3().setFromObject(object);
-            }
+            // Adiciona a Bounding Box à cena
+            adicionaBox("ivysaur", object);
 
-            let noBox = {
-                nomeObjeto: "ivysaur",
-                box: box
-            }
-            
-            boxes.push(noBox);
-            
-            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-            scene.add( helper );
-            
 
             ivysaur3D = object;
             ivysaur3D.name = "ivysaur";
@@ -460,22 +446,8 @@ function init() {
                 object.rotateY(135);                           // Rotação
 
 
-                var box = new THREE.Box3().setFromObject(object);
-
-                while (colide(box) == true) {
-                    object.position.copy(posicaoAleatoria());
-                    box = new THREE.Box3().setFromObject(object);
-                }
-                
-                let noBox = {
-                    nomeObjeto: "bulbasaur",
-                    box: box
-                }
-                
-                boxes.push(noBox);
-
-                var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-                scene.add( helper );
+                // Adiciona a Bounding Box à cena
+                adicionaBox("bulbasaur", object);
 
 
                 bulbasaur3D = object;
@@ -520,22 +492,8 @@ function init() {
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             
-            var box = new THREE.Box3().setFromObject(object);
-            
-            while (colide(box) == true) {
-                object.position.copy(posicaoAleatoria());
-                box = new THREE.Box3().setFromObject(object);
-            }
-            
-            let noBox = {
-                nomeObjeto: "groudon",
-                box: box
-            }
-            
-            boxes.push(noBox);
-            
-            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-            scene.add( helper );
+            // Adiciona a Bounding Box à cena
+            adicionaBox("groudon", object);
             
             
             groudon3D = object;
@@ -572,22 +530,9 @@ function init() {
             object.scale.set(0.01, 0.01, 0.01);                                     // Escala
             object.position.copy(posicaoAleatoria());                // Posição
 
-            var box = new THREE.Box3().setFromObject(object);
-
-            while (colide(box) == true) {
-                object.position.copy(posicaoAleatoria());
-                box = new THREE.Box3().setFromObject(object);
-            }
             
-            let noBox = {
-                nomeObjeto: "geodude",
-                box: box
-            }
-            
-            boxes.push(noBox);
-
-            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-            scene.add( helper );
+            // Adiciona a Bounding Box à cena
+            adicionaBox("geodude", object);
 
 
             geodude3D = object;
@@ -629,22 +574,10 @@ function init() {
                 object.position.copy(posicaoAleatoria());                // Posição
                 object.rotateY(135);                           // Rotação
 
-                var box = new THREE.Box3().setFromObject(object);
-
-                while (colide(box) == true) {
-                    object.position.copy(posicaoAleatoria());
-                    box = new THREE.Box3().setFromObject(object);
-                }
                 
-                let noBox = {
-                    nomeObjeto: "magnemite",
-                    box: box
-                }
-                
-                boxes.push(noBox);
+                // Adiciona a Bounding Box à cena
+                adicionaBox("magnemite", object);
 
-                var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-                scene.add( helper );
 
                 magnemite3D = object;
                 magnemite3D.name = "magnemite";
@@ -874,6 +807,38 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
 // COLLISION ENGINE
 // =======================================================
 // -------------------------------------------------------
+
+/**
+ * Adiciona o objeto ao vetor de 'boxes', que na realidade contém o nome do objeto,
+ * e sua Bounding Box para deteção de colisão
+ * @param {string} nomeObjeto
+ */
+function adicionaBox(nomeObjeto, object) {
+
+    // Cria a Bounding Box a partir do objeto
+    var box = new THREE.Box3().setFromObject(object);
+
+    // Enquanto colidir, atribui uma nova posição ao objeto e cria uma nova Box
+    while (colide(box) == true) {
+        object.position.copy(posicaoAleatoria());
+        box = new THREE.Box3().setFromObject(object);
+    }
+
+    // Cria o nó (nome, box) para adicionar ao vetor de 'boxes'
+    let noBox = {
+        nomeObjeto: nomeObjeto,
+        box: box
+    }
+    
+    // Adiciona ao vetor
+    boxes.push(noBox);
+    
+    // Adiciona o Helper
+    var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+    scene.add( helper );
+
+}
+
 
 /**
  * Retorna uma posição (Vector3) aleatória
