@@ -113,20 +113,26 @@
 
         </script>
 
-        
-        <div class="overlay">
-            <div class="overlay__inner">
-                <div class="overlay__content">
-                    <span class="spinner"></span>
-                </div>
-            </div>
+        <!-- Overlay de Loading -->
+        <div class="overlay"></div>
+
+        <!-- Barra de Progresso -->
+        <div class="container-progress">
+            <input type="checkbox" id="water" class="input-progress" />
+            <label for="water" class="label-progress">
+                <div id="fill"></div>
+            </label>
+            <span class="progress">Progress</span>
+            <span class="progress" id="percentage">0%</span>
         </div>
 
-        <!-- Código para manipulação -->
+        <!-- Código para Manipulação -->
         <script src="main.js"></script>
 
+        <!-- Pontuação -->
         <span class="pontuacao">0</span>
         
+        <!-- Menu de Comandos -->
         <ul class="comandos">
             <li class="comando"><button class="btn-comando" id="perspectiva">Câmera Cena</button></li>
             <li class="comando"><button class="btn-comando" id="ortografica">Câmera Pokeball</button></li>
