@@ -930,10 +930,16 @@ function catchPokemon(boxPokeball) {
 
     for (let i = 1; i < boxes.length; i++){
         if (boxPokeball.intersectsBox(boxes[i].box)) {
+            
             // Recupera o objeto que a Pokeball colidiu e remove da cena, junto com a sua Bounding Box
             var objeto = scene.getObjectByName(boxes[i].nomeObjeto);
             scene.remove(objeto);
             boxes[i].box.makeEmpty();
+
+            // Som de Catch
+            var catchSound = new Audio('audio/catch.wav');
+            catchSound.play();
+
             return true;       
         }
     }
@@ -959,7 +965,7 @@ cameraPerspectiva.add( audioListener );
 sound = new THREE.Audio( audioListener );
 
 audioLoader = new THREE.AudioLoader();
-audioLoader.load( 'audio/opening.mp3', function( buffer ) {
+audioLoader.load( 'audio/opening.wav', function( buffer ) {
 	sound.setBuffer( buffer );
 	sound.setLoop( true );
 	sound.setVolume( 1 );
@@ -1008,25 +1014,36 @@ function showTutorial() {
     $('.overlay-tutorial').show();
     $('button#start').show();
 
-    // audioLoader.load( 'audio/tutorial.mp3', function( buffer ) {
-    //     sound.setBuffer( buffer );
-    //     sound.setLoop( true );
-    //     sound.setVolume( 1 );
-    //     sound.play();
-    // });
+    sound.stop();
+    audioLoader.load( 'audio/tutorial.wav', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 1 );
+        sound.play();
+    });
 
 }
 
 function startGame() {
+    
     $('.overlay-tutorial').hide();
     $('.container-menu').hide();
     $('button#start').hide();
+
+    sound.stop();
+    audioLoader.load( 'audio/battle.wav', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( true );
+        sound.setVolume( 1 );
+        sound.play();
+    });
+
     animate();
 }
 
 $(document).on('click', 'button#play', function() {
 
-    var clickSound = new Audio('audio/click.mp3');
+    var clickSound = new Audio('audio/click.wav');
     clickSound.play();
 
     showTutorial();
@@ -1035,7 +1052,7 @@ $(document).on('click', 'button#play', function() {
 
 $(document).on('click', 'button#start', function() {
 
-    var clickSound = new Audio('audio/click.mp3');
+    var clickSound = new Audio('audio/click.wav');
     clickSound.play();
 
     startGame();
