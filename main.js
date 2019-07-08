@@ -247,7 +247,7 @@ function init() {
     var vertexShader = document.getElementById("vertex-shader");
     var fragmentShader = document.getElementById("fragment-shader");    
     
-    var material = new THREE.ShaderMaterial({
+    var materialShader = new THREE.ShaderMaterial({
         // Passa os parâmetros para os shaders
         uniforms: {
             Ka: { value: 1.0 },
@@ -336,38 +336,26 @@ function init() {
 
         function (object) {
 
+            // Animação da Pokeball
             mixer = new THREE.AnimationMixer(object);
-
             action = mixer.clipAction(object.animations[0]);
             action.play();
 
             // Sombra
-            object.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.receiveShadow = true;
-                    child.castShadow = true;
-                }
-            });
+            adicionaSombra(object);
 
             object.scale.set(0.0015, 0.0015, 0.0015);       // Escala
 
-            var box = new THREE.Box3().setFromObject(object);
 
-            let noBox = {
-                nomeObjeto: "pokeball",
-                box: box
-            }
-            
-            boxes.push(noBox);
-            
+            // Adiciona a Bounding Box à cena
+            adicionaBox("pokeball", object);
+
 
             pokeball3D = object;
             pokeball3D.name = 'pokeball';                   // Nome para futura referência
 
             scene.add(object);
             
-            var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-            scene.add( helper );
         }
 
     );
@@ -385,17 +373,10 @@ function init() {
         function(object) {
             
             // Adiciona a textura
-            object.traverse(function (node) {
-                if ( node.isMesh ) node.material = materialIvysaur;
-            });
+            adicionaTextura(object, materialIvysaur);
 
             // Sombra
-            object.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.receiveShadow = true;
-                    child.castShadow = true;
-                }
-            });
+            adicionaSombra(object);
             
             object.scale.set(0.99, 0.99, 0.99);          // Escala
             object.position.copy(posicaoAleatoria());    // Posição
@@ -434,16 +415,11 @@ function init() {
                 // As texturas vêm do MTL!
 
                 // Sombra
-                object.traverse(function (child) {
-                    if (child instanceof THREE.Mesh) {
-                        child.receiveShadow = true;
-                        child.castShadow = true;
-                    }
-                });
+                adicionaSombra(object);
 
-                object.scale.set(0.025, 0.025, 0.025);         // Escala
-                object.position.copy(posicaoAleatoria());                // Posição
-                object.rotateY(135);                           // Rotação
+                object.scale.set(0.025, 0.025, 0.025);          // Escala
+                object.position.copy(posicaoAleatoria());       // Posição
+                object.rotateY(135);                            // Rotação
 
 
                 // Adiciona a Bounding Box à cena
@@ -473,22 +449,13 @@ function init() {
             // As texturas vêm do MTL!
 
             // Sombra
-            object.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.receiveShadow = true;
-                    child.castShadow = true;
-                }
-            });
+            adicionaSombra(object);
 
-            // // Adiciona o shader
-            object.traverse(function(child) {
-                if (child instanceof THREE.Mesh) {
-                    child.material = material;
-                }
-            });
+            // Adiciona o shader
+            adicionaShader(object, materialShader);
 
             object.scale.set(0.1, 0.1, 0.1);            // Escala
-            object.position.copy(posicaoAleatoria());                // Posição
+            object.position.copy(posicaoAleatoria());   // Posição
             object.rotateY(THREE.Math.degToRad(90));    // Rotação
 
             
@@ -515,20 +482,13 @@ function init() {
         function(object) {
 
             // Adiciona a textura
-            object.traverse(function (node) {
-                if ( node.isMesh ) node.material = materialGeodude;
-            });
+            adicionaTextura(object, materialGeodude);
 
             // Sombra
-            object.traverse(function (child) {
-                if (child instanceof THREE.Mesh) {
-                    child.receiveShadow = true;
-                    child.castShadow = true;
-                }
-            });
+            adicionaSombra(object);
 
-            object.scale.set(0.01, 0.01, 0.01);                                     // Escala
-            object.position.copy(posicaoAleatoria());                // Posição
+            object.scale.set(0.01, 0.01, 0.01);         // Escala
+            object.position.copy(posicaoAleatoria());   // Posição
 
             
             // Adiciona a Bounding Box à cena
@@ -570,9 +530,9 @@ function init() {
                     }
                 });
 
-                object.scale.set(0.003, 0.003, 0.003);         // Escala
-                object.position.copy(posicaoAleatoria());                // Posição
-                object.rotateY(135);                           // Rotação
+                object.scale.set(0.003, 0.003, 0.003);          // Escala
+                object.position.copy(posicaoAleatoria());       // Posição
+                object.rotateY(135);                            // Rotação
 
                 
                 // Adiciona a Bounding Box à cena
@@ -645,6 +605,7 @@ function render() {
     var delta = clock.getDelta();
     if (mixer) mixer.update(delta);
 
+    // Verifica qual a câmera ativa e rederiza
     if (cameraAtiva == 0) {
         cameraPerspectiva.lookAt(scene.position);
         renderer.render(scene, cameraPerspectiva);
@@ -739,6 +700,10 @@ function Teclado(e) {
 }
 
 
+// =======================================================
+// FUNÇÕES AUXILIARES
+// =======================================================
+
 /**
  * Atualiza a luz e o helper (e o sol)
  */
@@ -783,7 +748,50 @@ function posicaoSol(tempo) {
 
 }
 
+/**
+ * Adiciona sombras ao objeto do parâmetro
+ * @param {Object3D} object
+ */
+function adicionaSombra(object) {
 
+    // Percorre o objeto e para cada malha adiciona sombra
+    object.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+            child.receiveShadow = true;
+            child.castShadow = true;
+        }
+    });
+
+}
+
+/**
+ * Adiciona o shader ao objeto do parâmetro
+ * @param {Object3D} object
+ */
+function adicionaShader(object, shaderMaterial) {
+    
+    // Percorre o objeto e para cada malha adiciona o shader
+    object.traverse(function(child) {
+        if (child instanceof THREE.Mesh) {
+            child.material = shaderMaterial;
+        }
+    });
+
+}
+
+/**
+ * Adiciona textura ao objeto do parâmetro com o material passado
+ * @param {Object3D} object 
+ * @param {MeshPhongMaterial} material 
+ */
+function adicionaTextura(object, material) {
+
+    // Para cada malha, adiciona a textura
+    object.traverse(function (node) {
+        if ( node.isMesh ) node.material = material;
+    });
+
+}
 
 /**
  * Cria os controles na GUI tanto para a posição da luz, quanto do alvo da luz
@@ -818,10 +826,13 @@ function adicionaBox(nomeObjeto, object) {
     // Cria a Bounding Box a partir do objeto
     var box = new THREE.Box3().setFromObject(object);
 
+    // Apenas para objetos diferentes da Pokeball!
     // Enquanto colidir, atribui uma nova posição ao objeto e cria uma nova Box
-    while (colide(box) == true) {
-        object.position.copy(posicaoAleatoria());
-        box = new THREE.Box3().setFromObject(object);
+    if (nomeObjeto != "pokeball") {
+        while (colide(box) == true) {
+            object.position.copy(posicaoAleatoria());
+            box = new THREE.Box3().setFromObject(object);
+        }
     }
 
     // Cria o nó (nome, box) para adicionar ao vetor de 'boxes'
