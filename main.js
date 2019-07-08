@@ -60,9 +60,8 @@ var spanPorcentagem = $('#percentage');
 var fillPorcentagem = $('#fill');
 
 
-// Chamadas
+// Inicializa os componentes do jogo, e espera o usuário clicar em play
 init();
-animate();
 
 
 // =======================================================
@@ -88,9 +87,8 @@ function init() {
     
         console.log( 'Loading complete!' );
 
-        // Retira o overlay
-        $('.overlay').hide();
-        $('.container-progress').hide();
+        // Retira o overlay e mostra o menu
+        showMenu();
     
     };
     
@@ -954,3 +952,27 @@ function catchPokemon(boxPokeball) {
     return false;
     
 }
+
+
+// -------------------------------------------------------
+// =======================================================
+// MENU DO JOGO
+// =======================================================
+// -------------------------------------------------------
+
+function showMenu() {
+    $('.container-progress').hide();
+    $('.container-menu').show();
+}
+
+function startGame() {
+    $('.overlay').hide();
+    $('.container-menu').hide();
+    animate();
+}
+
+$(document).on('click', 'button#play', function() {
+
+    startGame();
+
+});

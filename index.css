@@ -1,7 +1,30 @@
+/* =======================================================
+   FONTE
+   ======================================================= */
+
+@font-face {
+    font-family: pokemonHollow;
+    src: url(font/Pokemon\ Hollow.ttf);
+}
+@font-face {
+    font-family: pokemonSolid;
+    src: url(font/Pokemon\ Solid.ttf);
+}
+
+
+/* =======================================================
+   GERAL
+   ======================================================= */
+
 body{
     margin: 0;
     overflow: hidden;
 }
+
+
+/* =======================================================
+   COMANDOS
+   ======================================================= */
 
 .comandos {
     position: absolute;
@@ -149,4 +172,43 @@ body {
     top: 0;
     left: 50%;
     font-size: 80px;
+}
+
+.container-menu {
+    position: absolute;
+    top: 45%;
+    left: 39%;
+    z-index: 3;
+}
+
+button#play span {
+    font-family: pokemonSolid;
+    font-size: 40px;
+    color: #ffcb05;
+    text-shadow: -3px 0 #3a5ca8, 0 4px #3a5ca8, 3px 0 #3a5ca8, 0 -3px #3a5ca8;
+}
+button#play {
+    padding: 0;
+    width: 25vw;
+    border: 5px solid #2f6cb4;
+    border-radius: 40px;
+    background: #f2f9fa;
+}
+button#play:hover {
+    cursor: pointer;
+}
+
+.float-effect {
+    -webkit-transition:all .3s ease-out;
+    -moz-transition:all .3s ease-out;
+    -ms-transition:all .3s ease-out;
+    -o-transition:all .3s ease-out;
+    transition:all .3s ease-out;
+}
+.float-effect:hover {
+    -webkit-transform:translate(0px,-4px);
+    -moz-transform:translate(0px,-4px);
+    -ms-transform:translate(0px,-4px);
+    -o-transform:translate(0px,-4px);
+    transform:translate(0px,-4px);
 }
