@@ -942,6 +942,54 @@ function catchPokemon(boxPokeball) {
 }
 
 
+// =======================================================
+// MÚSICAS
+// =======================================================
+
+// Variáveis do Som
+var audioListener;
+var sound;
+var audioLoader;
+var context;
+
+
+audioListener = new THREE.AudioListener();
+cameraPerspectiva.add( audioListener );
+
+sound = new THREE.Audio( audioListener );
+
+audioLoader = new THREE.AudioLoader();
+audioLoader.load( 'audio/opening.mp3', function( buffer ) {
+	sound.setBuffer( buffer );
+	sound.setLoop( true );
+	sound.setVolume( 1 );
+	sound.play();
+});
+
+
+$(document).ready(function() {
+
+    context = new AudioContext();
+    context.resume();
+    
+
+    // Toggle Mute/Unmute
+    $('.speaker').click(function (e) {
+
+        e.preventDefault();
+    
+        $(this).toggleClass('mute');
+        if ($(this).hasClass('mute'))
+            sound.setVolume( 0 );
+        else
+            sound.setVolume( 1 );
+    
+    });
+
+});
+
+
+
 // -------------------------------------------------------
 // =======================================================
 // MENU DO JOGO
@@ -954,10 +1002,19 @@ function showMenu() {
 }
 
 function showTutorial() {
+
     $('button#play').hide();
     $('.overlay-menu').hide();
     $('.overlay-tutorial').show();
     $('button#start').show();
+
+    // audioLoader.load( 'audio/tutorial.mp3', function( buffer ) {
+    //     sound.setBuffer( buffer );
+    //     sound.setLoop( true );
+    //     sound.setVolume( 1 );
+    //     sound.play();
+    // });
+
 }
 
 function startGame() {
