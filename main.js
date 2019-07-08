@@ -55,32 +55,9 @@ var curva;
 var pontos;
 var t = 0;  // Parâmetro do polinômio de Bernstein da Curva de Bézier (vai de 0 até 1)
 
-
-// var elm = document.querySelector('#percentage');
-// setInterval(function () {
-//     if (!elm.innerHTML.match(/100%/gi)) {
-//         elm.innerHTML = (parseInt(elm.innerHTML) + 1) + '%';
-//     } else {
-//         clearInterval();
-//     }
-// }, 18);
-
+// Para o loading
 var spanPorcentagem = $('#percentage');
 var fillPorcentagem = $('#fill');
-
-// var porcentagem = 0;
-// while (porcentagem != 100) {
-
-//     setTimeout(function() {
-//         spanPorcentagem.text(porcentagem + '%');
-//         fillPorcentagem.css({
-//             "width": porcentagem
-//         });
-//         porcentagem += 10;
-//     }, 2000);
-
-// }
-
 
 
 // Chamadas
@@ -123,7 +100,7 @@ function init() {
         
         console.log( 'Loading file: ' + url + '.\nLoaded ' + itemsLoaded + ' of ' + itemsTotal + ' files.' );
         console.log( 'Porcentagem: ' + porcentagem + '%' );
-        
+
         spanPorcentagem.text(porcentagem + '%');
         fillPorcentagem.css({
             "width": porcentagem + "%"
