@@ -757,11 +757,7 @@ function Teclado(e) {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
             // Verifica colisão com outro Pokémon
-            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
-            if (catchPokemon(boxPokeball) == true)
-                pontuacao += 10;
-            $('.pontuacao').text(pontuacao);
-            console.log("Pontuação: " + pontuacao);
+            verificaCatch();
             
             break;
 
@@ -772,11 +768,7 @@ function Teclado(e) {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
             // Verifica colisão com outro Pokémon
-            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
-            if (catchPokemon(boxPokeball) == true)
-                pontuacao += 10;
-            $('.pontuacao').text(pontuacao);
-            console.log("Pontuação: " + pontuacao);
+            verificaCatch();
             
             break;
 
@@ -787,11 +779,7 @@ function Teclado(e) {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
             // Verifica colisão com outro Pokémon
-            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
-            if (catchPokemon(boxPokeball) == true)
-                pontuacao += 10;
-            $('.pontuacao').text(pontuacao);
-            console.log("Pontuação: " + pontuacao);
+            verificaCatch();
             
             break;
 
@@ -802,15 +790,12 @@ function Teclado(e) {
             cameraPokeball.lookAt(pokeball3D.position.x, .75, pokeball3D.position.z);
 
             // Verifica colisão com outro Pokémon
-            boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
-            if (catchPokemon(boxPokeball) == true)
-                pontuacao += 10;
-            $('.pontuacao').text(pontuacao);
-            console.log("Pontuação: " + pontuacao);
+            verificaCatch();
             
             break;
 
         case 'C':
+            // Muda a flag da câmera ativa
             cameraAtiva = !cameraAtiva;
             break;
     
@@ -948,6 +933,31 @@ function catchPokemon(boxPokeball) {
 }
 
 
+// -------------------------------------------------------
+// =======================================================
+// GAME ENGINE
+// =======================================================
+// -------------------------------------------------------
+
+/**
+ * Verifica se a pokeball capturou algum pokémon 
+ */
+function verificaCatch() {
+
+    // Atualiza a Bounding Box da pokeball de acordo com sua atual posição 
+    boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+
+    // Verifica se a Box intersecta uma de outro pokémon. Se sim, atualiza a pontuação
+    if (catchPokemon(boxPokeball) == true)
+        pontuacao += 10;
+
+    // Atualiza a pontuação na visualização
+    $('.pontuacao').text(pontuacao);
+    console.log("Pontuação: " + pontuacao);
+
+}
+
+
 // =======================================================
 // MÚSICAS
 // =======================================================
@@ -973,7 +983,9 @@ audioLoader.load( 'audio/opening.wav', function( buffer ) {
 	sound.play();
 });
 
-
+/**
+ * Ao carregar a página, cria um contexto de áudio (de acordo com as especificações do Google)
+ */
 $(document).ready(function() {
 
     context = new AudioContext();
@@ -1007,11 +1019,17 @@ $(document).ready(function() {
 // =======================================================
 // -------------------------------------------------------
 
+/**
+ * Mostra o menu do jogo
+ */
 function showMenu() {
     $('.container-progress').hide();
     $('.container-menu').show();
 }
 
+/**
+ * Mostra o tutorial do jogo
+ */
 function showTutorial() {
 
     $('button#play').hide();
@@ -1029,6 +1047,9 @@ function showTutorial() {
 
 }
 
+/**
+ * Inicia o jogo
+ */
 function startGame() {
     
     $('.overlay-tutorial').hide();
@@ -1046,6 +1067,7 @@ function startGame() {
     animate();
 }
 
+// Botão do menu do jogo
 $(document).on('click', 'button#play', function() {
 
     var clickSound = new Audio('audio/click.wav');
@@ -1055,6 +1077,7 @@ $(document).on('click', 'button#play', function() {
 
 });
 
+// Botão do tutorial do jogo
 $(document).on('click', 'button#start', function() {
 
     var clickSound = new Audio('audio/click.wav');
