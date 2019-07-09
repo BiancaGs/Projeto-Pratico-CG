@@ -213,9 +213,11 @@ body {
 
 .container-menu {
     position: absolute;
-    top: 45%;
-    left: 39%;
+    top: 50%;
+    left: 50%;
     z-index: 3;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
 }
 
 button#play span, button#start span, button.restart span {
