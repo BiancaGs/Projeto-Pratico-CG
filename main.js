@@ -779,10 +779,7 @@ function posicaoSol(tempo) {
     else {
         
         // Se chegar na posição final, o usuário perde
-        
-        
-        // Chegou ao final. Volta à posição inicial
-        t = 0;
+        derrota();
 
     }
 
@@ -977,14 +974,14 @@ function verificaCatch() {
     // Se só houver a Pokeball no vetor, então o usuário capturou todos os Pokémons.
     // Logo, venceu!
     if (boxes.length == 1)
-        victory();
+        vitoria();
 
 }
 
 /**
  * Procedimento caso o usuário vença 
  */
-function victory() {
+function vitoria() {
 
     if (flag == 0) {
         let tempo = clock.getElapsedTime().toFixed(2);
@@ -1056,6 +1053,27 @@ function victory() {
         // Pára a renderização
         cancelAnimationFrame(idAnimate);
     }
+}
+
+/**
+ * Procedimento caso o usuário perca 
+ */
+function derrota() {
+
+    $('.overlay-derrota').show();
+
+    // Música de derrota
+    sound.stop();
+    audioLoader.load( 'audio/derrota.wav', function( buffer ) {
+        sound.setBuffer( buffer );
+        sound.setLoop( false );
+        sound.setVolume( volume );
+        sound.play();
+    });
+
+    // Pára a renderização
+    cancelAnimationFrame(idAnimate);
+
 }
 
 
