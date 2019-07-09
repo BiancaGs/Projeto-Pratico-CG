@@ -24,7 +24,7 @@ var controls, scene, renderer;
 // Luz e sombra
 var ambient;
 var hemiLight;
-var light, lightHelper, shadowHelper;
+var light;
 
 // Canvas
 var canvas = document.getElementById('modelo');
@@ -38,6 +38,9 @@ var magnemite3D = new THREE.Object3D;
 var pokeball3D  = new THREE.Object3D;
 var sun3D;
 var sunGlow;
+
+// Helpers
+var axesHelper, lightHelper, shadowHelper, bezierHelper;
 
 // Detecção de Colisão
 var boxes = [];
@@ -200,7 +203,7 @@ function init() {
     scene.add(light.target);
 
     // Helper da sombra
-    var shadowHelper = new THREE.CameraHelper( light.shadow.camera );
+    shadowHelper = new THREE.CameraHelper( light.shadow.camera );
     scene.add( shadowHelper );
 
     // Helper da luz
@@ -271,7 +274,7 @@ function init() {
     // =======================================================
 
     // !REMOVER: Helper para os eixos 
-    var axesHelper = new THREE.AxesHelper( 5 );
+    axesHelper = new THREE.AxesHelper( 5 );
     scene.add( axesHelper );
     //? The X axis is red. The Y axis is green. The Z axis is blue.
 
@@ -566,8 +569,8 @@ function init() {
     // Linha da curva
     var g = new THREE.BufferGeometry().setFromPoints( pontos );
     var m = new THREE.LineBasicMaterial( { color : 0xff0000 } );
-    var linhaCurva = new THREE.Line( g, m );
-    scene.add(linhaCurva);
+    bezierHelper = new THREE.Line( g, m );
+    scene.add(bezierHelper);
     
 
 
@@ -616,6 +619,9 @@ function init() {
     let skybox = new THREE.Mesh(skyboxGeo, materialArray);
 
     scene.add(skybox);
+
+
+    // TODO: Desativar Helpers no início
 
 }
 
@@ -725,6 +731,11 @@ function Teclado(e) {
         case 'C':
             // Muda a flag da câmera ativa
             cameraAtiva = !cameraAtiva;
+            break;
+
+        case 'H':
+            // Ativa/Desativa os helpers
+            toggleHelpers();
             break;
     
         default:
@@ -846,6 +857,51 @@ function criarGUILuz(gui, vector3, name, onChangeFn) {
 }
 
 
+/**
+ * TODO
+ * Função auxiliar para desativar os helpers na inicialização
+ */
+function desativarHelpers() {
+
+    // Helper dos eixos
+    axesHelper.visible = false;
+
+    // Helpers de iluminação
+    lightHelper.visible = false;
+    shadowHelper.visible = false;
+
+    // Helpers das Bounding Boxes
+    for (let i = 0; i < boxes.length; i++) {
+        var boxHelper = boxes[i].boxHelper;
+        boxHelper.visible = false;
+    }
+
+}
+
+/**
+ * Função auxiliar para ativar/desativar os helpers
+ */
+function toggleHelpers() {
+
+    // Helper dos eixos
+    axesHelper.visible = !axesHelper.visible;
+
+    // Helpers de iluminação
+    lightHelper.visible = !lightHelper.visible;
+    shadowHelper.visible = !shadowHelper.visible;
+
+    // Helper da Curva de Bezier
+    bezierHelper.visible = !bezierHelper.visible;
+
+    // Helpers das Bounding Boxes
+    for (let i = 0; i < boxes.length; i++) {
+        var boxHelper = boxes[i].boxHelper;
+        boxHelper.visible = !boxHelper.visible;
+    }
+
+}
+
+
 
 // -------------------------------------------------------
 // =======================================================
@@ -872,18 +928,19 @@ function adicionaBox(nomeObjeto, object) {
         }
     }
 
+    // Adiciona o Helper
+    var boxHelper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+    scene.add( boxHelper );
+
     // Cria o nó (nome, box) para adicionar ao vetor de 'boxes'
     let noBox = {
         nomeObjeto: nomeObjeto,
-        box: box
+        box: box,
+        boxHelper: boxHelper
     }
     
     // Adiciona ao vetor
     boxes.push(noBox);
-    
-    // Adiciona o Helper
-    var helper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-    scene.add( helper );
 
 }
 
