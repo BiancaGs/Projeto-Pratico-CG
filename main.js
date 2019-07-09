@@ -45,6 +45,7 @@ var axesHelper, lightHelper, shadowHelper, bezierHelper;
 // Detecção de Colisão
 var boxes = [];
 var boxPokeball;
+var boxPokeballVisible = false;
 
 // Lógica do Jogo
 var pontuacao = 0;
@@ -622,6 +623,7 @@ function init() {
 
 
     // TODO: Desativar Helpers no início
+    desativarHelpers();
 
 }
 
@@ -870,11 +872,8 @@ function desativarHelpers() {
     lightHelper.visible = false;
     shadowHelper.visible = false;
 
-    // Helpers das Bounding Boxes
-    for (let i = 0; i < boxes.length; i++) {
-        var boxHelper = boxes[i].boxHelper;
-        boxHelper.visible = false;
-    }
+    // Helper da Curva de Bezier
+    bezierHelper.visible = false;
 
 }
 
@@ -882,6 +881,8 @@ function desativarHelpers() {
  * Função auxiliar para ativar/desativar os helpers
  */
 function toggleHelpers() {
+
+    boxPokeballVisible = !boxPokeballVisible;
 
     // Helper dos eixos
     axesHelper.visible = !axesHelper.visible;
@@ -929,8 +930,17 @@ function adicionaBox(nomeObjeto, object) {
     }
 
     // Adiciona o Helper
-    var boxHelper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
-    scene.add( boxHelper );
+    var boxHelper;
+    if (nomeObjeto == "pokeball") {
+        boxHelper = new THREE.Box3Helper( box, "red" ); // A pokeball fica com a cor vermelha
+        boxHelper.visible = false;
+        scene.add( boxHelper );
+    }
+    else {
+        boxHelper = new THREE.Box3Helper( box, Math.random()*0xFFFFFF );
+        boxHelper.visible = false;
+        scene.add( boxHelper );
+    }
 
     // Cria o nó (nome, box) para adicionar ao vetor de 'boxes'
     let noBox = {
@@ -989,6 +999,8 @@ function catchPokemon(boxPokeball) {
             // Recupera o objeto que a Pokeball colidiu e remove da cena, junto com a sua Bounding Box
             var objeto = scene.getObjectByName(boxes[i].nomeObjeto);
             scene.remove(objeto);
+            scene.remove(boxes[i].box);
+            scene.remove(boxes[i].boxHelper);
             boxes[i].box.makeEmpty();
 
             // Remove do vetor 'boxes'
@@ -1019,6 +1031,12 @@ function verificaCatch() {
 
     // Atualiza a Bounding Box da pokeball de acordo com sua atual posição 
     boxPokeball = new THREE.Box3().setFromObject(pokeball3D);
+    scene.remove(boxes[0].boxHelper);
+    boxes[0].box = new THREE.Box3().setFromObject(scene.getObjectByName(boxes[0].nomeObjeto));
+    boxes[0].boxHelper = new THREE.Box3Helper( boxes[0].box, "red" );
+    boxes[0].boxHelper.visible = boxPokeballVisible;
+    scene.add(boxes[0].boxHelper);
+    
 
     // Verifica se a Box intersecta uma de outro pokémon. Se sim, atualiza a pontuação
     if (catchPokemon(boxPokeball) == true)
@@ -1026,7 +1044,6 @@ function verificaCatch() {
 
     // Atualiza a pontuação na visualização
     $('.pontuacao').text(pontuacao);
-    console.log("Pontuação: " + pontuacao);
 
     // Se só houver a Pokeball no vetor, então o usuário capturou todos os Pokémons.
     // Logo, venceu!
