@@ -12,6 +12,7 @@ if (!WEBGL.isWebGLAvailable()) {
 
 // Variáveis para utilização posterior
 var container;
+var idAnimate;
 
 // Câmera
 var cameraPerspectiva, cameraPokeball;
@@ -44,6 +45,7 @@ var boxPokeball;
 
 // Lógica do Jogo
 var pontuacao = 0;
+var flag = 0;
 
 // Animação
 var clock = new THREE.Clock();
@@ -619,7 +621,7 @@ function init() {
 
 // Função animate (loop)
 function animate(){
-    requestAnimationFrame(animate);
+    idAnimate = requestAnimationFrame(animate);
     render();
 }
 
@@ -627,7 +629,7 @@ function animate(){
 function render() {
 
     // Atualiza a posição da pokeball conforme a curva definida
-    posicaoSol(60);
+    posicaoSol(45);
 
     // Aplica a animação na Pokeball
     var delta = clock.getDelta();
@@ -984,10 +986,76 @@ function verificaCatch() {
  */
 function victory() {
 
-    
+    if (flag == 0) {
+        let tempo = clock.getElapsedTime().toFixed(2);
+        
+        // 3 Estrelas
+        if (tempo <= 25) {
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(1)').children('.full'));
+                animarEstrela($('.star:nth-of-type(1)'));
+            }, 500);
+            
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(2)').children('.full'));
+                animarEstrela($('.star:nth-of-type(2)'));
+            }, 1000);
+            
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(3)').children('.full'));
+                animarEstrela($('.star:nth-of-type(3)'));
+            }, 1500);
 
-    console.log('Vitória!');
+            flag = 1;
+            // Multiplicador
+            pontuacao *= 2;
+        }
 
+        // 2 Estrelas
+        else if (tempo <= 35) {
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(1)').children('.full'));
+                animarEstrela($('.star:nth-of-type(1)'));
+            }, 500);
+            
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(2)').children('.full'));
+                animarEstrela($('.star:nth-of-type(2)'));
+            }, 1000);
+
+            flag = 1;
+            // Multiplicador
+            pontuacao *= 1.5;
+        }
+
+        // 1 Estrela
+        else {
+            setTimeout(function() {
+                setFullStarState($('.star:nth-of-type(1)').children('.full'));
+                animarEstrela($('.star:nth-of-type(1)'));
+            }, 500);
+
+            flag = 1;
+            // Multiplicador
+            pontuacao *= 1;
+        }
+
+        $('.pontuacao-final').text(pontuacao);
+
+        $('.overlay-vitoria').show();
+
+        // Música de vitória
+        sound.stop();
+        audioLoader.load( 'audio/victory.wav', function( buffer ) {
+            sound.setBuffer( buffer );
+            sound.setLoop( false );
+            sound.setVolume( volume );
+            sound.play();
+        });
+
+        // Pára a renderização
+        cancelAnimationFrame(idAnimate);
+    }
 }
 
 

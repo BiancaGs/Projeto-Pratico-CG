@@ -23,6 +23,7 @@
         <!-- CSS -->
         <link rel="stylesheet" href="index.css">
 
+        <!-- Outros -->
         <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
 
     </head>
@@ -155,7 +156,56 @@
             <span></span>
         </a>
 
+        <!-- Vitória e Derrota -->
+        <div class="overlay-vitoria" style="display: none;">
+            
+            <!-- <h1>Vitória!</h1> -->
 
+            <!-- Star Rating -->
+            <!-- Estrelas -->
+            <div class="rating" data-vote="0">
+            
+                <div class="star">
+            
+                    <span class="full" data-value="1"></span>
+                    <span class="selected"></span>
+            
+                </div>
+            
+                <div class="star">
+            
+                    <span class="full" data-value="2"></span>
+                    <span class="selected"></span>
+            
+                </div>
+            
+                <div class="star">
+            
+                    <span class="full" data-value="3"></span>
+                    <span class="selected"></span>
+            
+                </div>
+
+            </div>
+
+            <!-- Pontuação Final -->
+            <p class="pontuacao-final" id="pontuacao-final"></p>
+
+            <a href="index.html">
+                <button type="button" class="restart float-effect">
+                    <span>Jogar novamente</span>
+                </button>
+            </a>
+        </div>
+        
+        <div class="overlay-derrota" style="display: none;">
+            <button type="button" class="restart float-effect">
+                <span>Jogar novamente</span>
+            </button>
+        </div>
+
+        <!-- Star Rating -->
+        <script src="starRating.js"></script>
     </body>
 
 </html>
