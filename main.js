@@ -631,6 +631,10 @@ function render() {
 
     // Aplica a animação na Pokeball
     var delta = clock.getDelta();
+
+    // Atualiza o tempo na visualização
+    $('.tempo').text(clock.getElapsedTime().toFixed(2));
+    
     if (mixer) mixer.update(delta);
 
     // Verifica qual a câmera ativa e rederiza
@@ -770,9 +774,15 @@ function posicaoSol(tempo) {
         t += inc;
 
     }
-    else
+    else {
+        
+        // Se chegar na posição final, o usuário perde
+        
+        
         // Chegou ao final. Volta à posição inicial
         t = 0;
+
+    }
 
 }
 
@@ -925,6 +935,9 @@ function catchPokemon(boxPokeball) {
             scene.remove(objeto);
             boxes[i].box.makeEmpty();
 
+            // Remove do vetor 'boxes'
+            boxes.splice(i, 1);
+
             // Som de Catch
             var catchSound = new Audio('audio/catch.wav');
             catchSound.play();
@@ -958,6 +971,22 @@ function verificaCatch() {
     // Atualiza a pontuação na visualização
     $('.pontuacao').text(pontuacao);
     console.log("Pontuação: " + pontuacao);
+
+    // Se só houver a Pokeball no vetor, então o usuário capturou todos os Pokémons.
+    // Logo, venceu!
+    if (boxes.length == 1)
+        victory();
+
+}
+
+/**
+ * Procedimento caso o usuário vença 
+ */
+function victory() {
+
+    
+
+    console.log('Vitória!');
 
 }
 
@@ -1059,6 +1088,7 @@ function startGame() {
     $('.overlay-tutorial').hide();
     $('.container-menu').hide();
     $('button#start').hide();
+    $('.tempo').show();
 
     sound.stop();
     audioLoader.load( 'audio/battle.wav', function( buffer ) {

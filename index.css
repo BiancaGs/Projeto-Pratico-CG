@@ -157,6 +157,13 @@ body {
     font-size: 80px;
 }
 
+.tempo {
+    position: absolute;
+    top: 20px;
+    left: 30px;
+    font-size: 30px;
+}
+
 .container-menu {
     position: absolute;
     top: 45%;
