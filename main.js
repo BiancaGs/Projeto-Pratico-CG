@@ -4,6 +4,9 @@
 /// <reference path='node_modules/three/examples/js/loaders/MTLLoader.js' />
 /// <reference path='node_modules/three/examples/js/controls/OrbitControls.js' />
 
+import { CountUp } from './node_modules/countup.js/dist/countUp.min.js';
+
+
 // Verifica se foi possível inicializar o WebGL
 if (!WEBGL.isWebGLAvailable()) {
     var erro = WEBGL.getWebGLErrorMessage();
@@ -774,7 +777,7 @@ function posicaoSol(tempo) {
     // Calcula o incremento de t para que o jogo demore 'tempo' segundos
     var inc = 1 / (60 * tempo);
 
-    sol = scene.getObjectByName('sol');
+    var sol = scene.getObjectByName('sol');
     if (t <= 1) {
 
         // Atualiza a posição e incrementa o parâmetro
@@ -1111,8 +1114,15 @@ function vitoria() {
             pontuacao *= 1;
         }
 
+        // Pontuação Final e CountUp
         $('.pontuacao-final').text(pontuacao);
+        const opcoes = {
+            duration: 4
+        };
+        let countUp = new CountUp('pontuacao-final', pontuacao, opcoes);
+        countUp.start();
 
+        // Mostra a tela de vitória
         $('.overlay-vitoria').show();
 
         // Música de vitória
