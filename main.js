@@ -637,7 +637,7 @@ function animate(){
 function render() {
 
     // Atualiza a posição da pokeball conforme a curva definida
-    posicaoSol(45);
+    posicaoSol(30);
 
     // Aplica a animação na Pokeball
     var delta = clock.getDelta();
@@ -1061,7 +1061,7 @@ function vitoria() {
         let tempo = clock.getElapsedTime().toFixed(2);
         
         // 3 Estrelas
-        if (tempo <= 25) {
+        if (tempo <= 15) {
             setTimeout(function() {
                 setFullStarState($('.star:nth-of-type(1)').children('.full'));
                 animarEstrela($('.star:nth-of-type(1)'));
@@ -1083,7 +1083,7 @@ function vitoria() {
         }
 
         // 2 Estrelas
-        else if (tempo <= 35) {
+        else if (tempo <= 20) {
             setTimeout(function() {
                 setFullStarState($('.star:nth-of-type(1)').children('.full'));
                 animarEstrela($('.star:nth-of-type(1)'));
